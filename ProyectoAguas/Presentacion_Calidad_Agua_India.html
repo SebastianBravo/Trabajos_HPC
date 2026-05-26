@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calidad del Agua — India | PySpark & ML</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500;600&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-deep:   #0a1628;
+    --blue-mid:    #1a3a6b;
+    --blue-bright: #1e5fc4;
+    --blue-light:  #3a8ef6;
+    --blue-pale:   #dce9ff;
+    --yellow:      #f5c800;
+    --yellow-light:#fff4a3;
+    --white:       #ffffff;
+    --gray-light:  #f4f6fb;
+    --gray-mid:    #c8d6ee;
+    --text-dark:   #0d1f3c;
+    --text-body:   #2c3e60;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Barlow', sans-serif;
+    background: var(--gray-light);
+    color: var(--text-body);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  /* ── NAVIGATION ──────────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--blue-deep);
+    border-bottom: 2px solid var(--yellow);
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 32px; height: 54px;
+    overflow-x: auto;
+  }
+  nav a {
+    color: var(--gray-mid);
+    text-decoration: none;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 13px; font-weight: 600; letter-spacing: .06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding: 4px 10px;
+    border-radius: 3px;
+    transition: background .2s, color .2s;
+  }
+  nav a:hover { background: var(--blue-mid); color: var(--yellow); }
+  nav .nav-dot { color: var(--yellow); opacity: .4; font-size: 10px; }
+
+  /* ── HERO ─────────────────────────────────────────────────────────── */
+  .hero {
+    margin-top: 54px;
+    background: var(--blue-deep);
+    position: relative; overflow: hidden;
+    padding: 80px 60px 70px;
+    min-height: 380px;
+    display: flex; flex-direction: column; justify-content: center;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 800px 500px at 80% 50%, rgba(30,95,196,.35) 0%, transparent 70%),
+      repeating-linear-gradient(
+        -45deg,
+        transparent, transparent 28px,
+        rgba(255,255,255,.015) 28px, rgba(255,255,255,.015) 29px
+      );
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: var(--yellow);
+    color: var(--blue-deep);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 800; letter-spacing: .12em;
+    text-transform: uppercase;
+    padding: 4px 12px; border-radius: 2px;
+    margin-bottom: 18px; width: fit-content;
+  }
+  .hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(34px, 5vw, 58px);
+    font-weight: 800;
+    color: var(--white);
+    line-height: 1.08;
+    max-width: 780px;
+    margin-bottom: 18px;
+    position: relative;
+  }
+  .hero h1 span { color: var(--yellow); }
+  .hero-sub {
+    color: var(--gray-mid);
+    font-size: 15px; max-width: 620px;
+    position: relative; margin-bottom: 36px;
+  }
+  .hero-meta {
+    display: flex; gap: 32px; flex-wrap: wrap;
+    position: relative;
+  }
+  .hero-meta-item { color: var(--gray-mid); font-size: 13px; }
+  .hero-meta-item strong { color: var(--yellow); display: block; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 2px; }
+  .hero-stat-strip {
+    display: flex; gap: 0;
+    background: rgba(255,255,255,.06);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 6px;
+    margin-top: 36px;
+    width: fit-content;
+    overflow: hidden;
+    position: relative;
+  }
+  .hero-stat {
+    padding: 14px 28px;
+    border-right: 1px solid rgba(255,255,255,.1);
+    text-align: center;
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-stat .val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 32px; font-weight: 800;
+    color: var(--yellow); line-height: 1;
+  }
+  .hero-stat .lbl {
+    font-size: 11px; color: var(--gray-mid); letter-spacing: .07em; text-transform: uppercase; margin-top: 4px;
+  }
+
+  /* ── SECTIONS ─────────────────────────────────────────────────────── */
+  section {
+    max-width: 1200px; margin: 0 auto;
+    padding: 64px 40px;
+  }
+  section + section { padding-top: 0; }
+
+  .section-label {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px; font-weight: 700; letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--blue-bright);
+    margin-bottom: 8px;
+  }
+  .section-label::before {
+    content: '●'; margin-right: 6px; color: var(--yellow);
+  }
+  h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: clamp(24px, 3.5vw, 38px);
+    font-weight: 700; color: var(--blue-deep);
+    line-height: 1.12; margin-bottom: 22px;
+  }
+  h3 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 20px; font-weight: 700;
+    color: var(--blue-mid); margin-bottom: 10px;
+  }
+  p { margin-bottom: 14px; }
+
+  /* ── CARDS ─────────────────────────────────────────────────────────── */
+  .card {
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid var(--gray-mid);
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(10,22,40,.07);
+  }
+  .card-header {
+    background: var(--blue-deep);
+    padding: 14px 22px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .card-header h3 { color: var(--white); margin: 0; font-size: 17px; }
+  .card-header .badge {
+    background: var(--yellow);
+    color: var(--blue-deep);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 800; letter-spacing: .1em;
+    padding: 2px 8px; border-radius: 2px; text-transform: uppercase;
+  }
+  .card-body { padding: 22px; }
+
+  /* ── CHART CARD ─────────────────────────────────────────────────────── */
+  .chart-card {
+    background: var(--white);
+    border-radius: 10px;
+    border: 1px solid var(--gray-mid);
+    box-shadow: 0 2px 16px rgba(10,22,40,.07);
+    overflow: hidden;
+    margin-bottom: 32px;
+  }
+  .chart-card-header {
+    background: linear-gradient(90deg, var(--blue-deep) 0%, var(--blue-mid) 100%);
+    padding: 12px 24px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .chart-card-header h3 { color: var(--white); margin: 0; font-size: 16px; }
+  .chart-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px; font-weight: 700; letter-spacing: .1em;
+    text-transform: uppercase;
+    background: rgba(255,255,255,.12);
+    color: var(--yellow);
+    padding: 3px 8px; border-radius: 2px;
+  }
+  .chart-img {
+    width: 100%; display: block;
+    padding: 10px;
+    background: #fafbfd;
+    border-bottom: 1px solid var(--gray-mid);
+  }
+  .chart-img img { width: 100%; height: auto; border-radius: 4px; display: block; }
+  .chart-insight {
+    padding: 16px 24px;
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .insight-icon {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    background: var(--yellow);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 15px;
+    margin-top: 1px;
+  }
+  .insight-text { font-size: 13.5px; color: var(--text-body); line-height: 1.6; }
+  .insight-text strong { color: var(--blue-deep); }
+
+  /* ── GRID LAYOUTS ─────────────────────────────────────────────────── */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+  @media (max-width: 900px) {
+    .grid-2 { grid-template-columns: 1fr; }
+    .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  /* ── STEP FLOW ──────────────────────────────────────────────────── */
+  .steps {
+    display: flex; gap: 0;
+    counter-reset: step;
+    flex-wrap: wrap;
+  }
+  .step {
+    flex: 1; min-width: 140px;
+    display: flex; flex-direction: column; align-items: center;
+    position: relative;
+    padding: 0 10px;
+    text-align: center;
+  }
+  .step:not(:last-child)::after {
+    content: '→';
+    position: absolute; right: -12px; top: 18px;
+    color: var(--blue-bright); font-size: 16px;
+  }
+  .step-num {
+    width: 40px; height: 40px;
+    background: var(--blue-bright);
+    color: var(--white);
+    border-radius: 50%;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 10px;
+    flex-shrink: 0;
+  }
+  .step-label { font-size: 12.5px; font-weight: 600; color: var(--text-dark); line-height: 1.4; }
+
+  /* ── CODE BLOCK ──────────────────────────────────────────────────── */
+  .code-wrap {
+    background: #0d1117;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255,255,255,.08);
+  }
+  .code-title {
+    background: #161b22;
+    padding: 8px 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .code-title span {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 12px; font-weight: 700; letter-spacing: .08em;
+    text-transform: uppercase; color: #8b949e;
+  }
+  .code-title .lang-tag {
+    font-size: 10px; letter-spacing: .1em;
+    background: rgba(245,200,0,.15);
+    color: var(--yellow);
+    padding: 1px 6px; border-radius: 2px;
+  }
+  pre {
+    font-family: 'Source Code Pro', monospace;
+    font-size: 12.5px; line-height: 1.7;
+    padding: 18px 20px;
+    overflow-x: auto;
+    color: #e6edf3;
+    margin: 0;
+  }
+  .kw  { color: #ff7b72; }
+  .fn  { color: #d2a8ff; }
+  .st  { color: #a5d6ff; }
+  .cm  { color: #8b949e; }
+  .nb  { color: #79c0ff; }
+  .nu  { color: #f2cc60; }
+
+  /* ── TABLES ──────────────────────────────────────────────────────── */
+  .table-wrap { overflow-x: auto; border-radius: 8px; border: 1px solid var(--gray-mid); margin-bottom: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th {
+    background: var(--blue-deep);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700; letter-spacing: .07em; font-size: 13px;
+    padding: 11px 16px; text-align: left;
+  }
+  thead th:first-child { border-radius: 8px 0 0 0; }
+  thead th:last-child { border-radius: 0 8px 0 0; }
+  tbody tr:nth-child(even) { background: var(--gray-light); }
+  tbody tr:hover { background: var(--blue-pale); }
+  tbody td { padding: 10px 16px; border-bottom: 1px solid var(--gray-mid); }
+  .tag-null { background: #fee2e2; color: #b91c1c; padding: 2px 8px; border-radius: 3px; font-weight: 600; font-size: 12px; }
+  .tag-ok   { background: #dcfce7; color: #15803d; padding: 2px 8px; border-radius: 3px; font-weight: 600; font-size: 12px; }
+
+  /* ── METRIC CARDS ─────────────────────────────────────────────────── */
+  .metric-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 16px; margin-bottom: 24px; }
+  .metric-card {
+    background: var(--white);
+    border: 1px solid var(--gray-mid);
+    border-radius: 8px;
+    padding: 18px 16px;
+    text-align: center;
+    box-shadow: 0 1px 8px rgba(10,22,40,.05);
+  }
+  .metric-card .m-val {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 30px; font-weight: 800;
+    color: var(--blue-bright); line-height: 1;
+    margin-bottom: 4px;
+  }
+  .metric-card.highlight .m-val { color: var(--yellow); }
+  .metric-card .m-lbl { font-size: 11.5px; color: #6b7a99; font-weight: 500; }
+  .metric-card .m-sub { font-size: 11px; color: var(--gray-mid); margin-top: 4px; }
+
+  /* ── WEIGHT TABLE ──────────────────────────────────────────────────── */
+  .weight-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .weight-bar-label { width: 180px; font-size: 12.5px; font-weight: 600; color: var(--text-dark); flex-shrink: 0; }
+  .weight-bar-track { flex: 1; height: 20px; background: var(--gray-light); border-radius: 4px; overflow: hidden; }
+  .weight-bar-fill { height: 100%; background: linear-gradient(90deg, var(--blue-bright), var(--blue-light)); border-radius: 4px; }
+  .weight-bar-fill.yellow { background: linear-gradient(90deg, #e6a800, var(--yellow)); }
+  .weight-bar-val { width: 50px; text-align: right; font-size: 12.5px; font-weight: 700; color: var(--blue-mid); }
+
+  /* ── ALERT BOX ──────────────────────────────────────────────────── */
+  .alert {
+    border-left: 4px solid var(--blue-bright);
+    background: var(--blue-pale);
+    padding: 12px 16px;
+    border-radius: 0 6px 6px 0;
+    margin-bottom: 20px;
+    font-size: 13.5px;
+  }
+  .alert.yellow { border-color: var(--yellow); background: var(--yellow-light); }
+  .alert.green  { border-color: #16a34a; background: #f0fdf4; }
+
+  /* ── CONCLUSION CARDS ─────────────────────────────────────────────── */
+  .conclusion-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .conclusion-card {
+    background: var(--white);
+    border-radius: 8px;
+    border: 1px solid var(--gray-mid);
+    padding: 20px;
+    border-top: 4px solid var(--blue-bright);
+  }
+  .conclusion-card.yellow-top { border-top-color: var(--yellow); }
+  .conclusion-card.green-top  { border-top-color: #16a34a; }
+  .conclusion-card h4 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 17px; font-weight: 700; color: var(--blue-deep);
+    margin-bottom: 10px;
+  }
+  .conclusion-card ul { padding-left: 16px; }
+  .conclusion-card li { font-size: 13px; margin-bottom: 6px; }
+
+  /* ── DIVIDER ──────────────────────────────────────────────────────── */
+  .divider {
+    height: 4px;
+    background: linear-gradient(90deg, var(--blue-deep) 0%, var(--blue-bright) 50%, var(--yellow) 100%);
+    border: none; margin: 0;
+  }
+
+  /* ── FOOTER ──────────────────────────────────────────────────────── */
+  footer {
+    background: var(--blue-deep);
+    color: var(--gray-mid);
+    text-align: center;
+    padding: 28px 40px;
+    font-size: 13px;
+  }
+  footer strong { color: var(--yellow); }
+
+  /* ── SECTION BG ALT ──────────────────────────────────────────────── */
+  .bg-alt { background: #eef3fb; }
+  .section-wrapper { background: var(--white); }
+  .section-wrapper-dark {
+    background: var(--blue-deep);
+    color: var(--white);
+  }
+  .section-wrapper-dark h2 { color: var(--white); }
+  .section-wrapper-dark .section-label { color: var(--yellow); }
+  .section-wrapper-dark p { color: var(--gray-mid); }
+
+  /* ── COMPARISON TABLE ────────────────────────────────────────────── */
+  .compare-row { display: flex; align-items: stretch; gap: 24px; margin-bottom: 28px; }
+  .compare-col {
+    flex: 1;
+    background: var(--white);
+    border-radius: 10px;
+    border: 2px solid var(--gray-mid);
+    overflow: hidden;
+  }
+  .compare-col.winner { border-color: var(--yellow); }
+  .compare-col-head {
+    padding: 14px 20px;
+    background: var(--blue-mid);
+    color: var(--white);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 18px; font-weight: 700;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .compare-col.winner .compare-col-head { background: var(--blue-deep); }
+  .compare-col-head .winner-badge {
+    background: var(--yellow); color: var(--blue-deep);
+    font-size: 10px; font-weight: 800; letter-spacing: .1em;
+    text-transform: uppercase; padding: 2px 7px; border-radius: 2px;
+  }
+  .compare-col-body { padding: 18px 20px; }
+  .compare-metric { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding-bottom: 8px; border-bottom: 1px solid var(--gray-light); }
+  .compare-metric:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+  .compare-metric .name { font-size: 13px; font-weight: 600; color: #6b7a99; }
+  .compare-metric .val { font-family: 'Barlow Condensed', sans-serif; font-size: 22px; font-weight: 700; color: var(--blue-deep); }
+  .compare-metric .val.good { color: #16a34a; }
+  .compare-metric .val.bad  { color: #dc2626; }
+
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#portada">Inicio</a>
+  <span class="nav-dot">◆</span>
+  <a href="#problema">Problema</a>
+  <span class="nav-dot">◆</span>
+  <a href="#datos">Datos</a>
+  <span class="nav-dot">◆</span>
+  <a href="#eda">EDA</a>
+  <span class="nav-dot">◆</span>
+  <a href="#wqi">Índice WQI</a>
+  <span class="nav-dot">◆</span>
+  <a href="#modelos">Modelos</a>
+  <span class="nav-dot">◆</span>
+  <a href="#resultados">Resultados</a>
+  <span class="nav-dot">◆</span>
+  <a href="#conclusiones">Conclusiones</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="portada">
+  <div class="hero-badge">Procesamiento de Alto Volumen de Datos · PySpark + Keras</div>
+  <h1>Calidad del Agua en<br><span>Ríos de la India</span></h1>
+  <p class="hero-sub">Diagnóstico del Índice de Calidad del Agua (WQI) mediante Regresión Lineal distribuida (MLlib) y Red Neuronal profunda (TensorFlow/Keras) sobre datos reales de 18 estados.</p>
+  <div class="hero-meta">
+    <div class="hero-meta-item">
+      <strong>Autor</strong>Juan Sebastián Bravo Santacruz
+    </div>
+    <div class="hero-meta-item">
+      <strong>Institución</strong>Pontificia Universidad Javeriana
+    </div>
+    <div class="hero-meta-item">
+      <strong>Fecha</strong>Mayo 2026
+    </div>
+    <div class="hero-meta-item">
+      <strong>Entorno</strong>Apache Spark 3.5.5 · TensorFlow/Keras
+    </div>
+  </div>
+  <div class="hero-stat-strip">
+    <div class="hero-stat"><div class="val">534</div><div class="lbl">Registros brutos</div></div>
+    <div class="hero-stat"><div class="val">447</div><div class="lbl">Registros limpios</div></div>
+    <div class="hero-stat"><div class="val">18</div><div class="lbl">Estados de la India</div></div>
+    <div class="hero-stat"><div class="val">2</div><div class="lbl">Modelos ML</div></div>
+    <div class="hero-stat"><div class="val">R²=1.0</div><div class="lbl">Mejor R² (MLlib)</div></div>
+  </div>
+</div>
+<hr class="divider">
+
+<!-- PROBLEMA & OBJETIVO -->
+<div class="section-wrapper" id="problema">
+<section>
+  <div class="section-label">01 · Problema &amp; Objetivo</div>
+  <h2>¿Por qué predecir la calidad del agua?</h2>
+  <div class="grid-2" style="gap:32px; align-items:start;">
+    <div>
+      <p>El tratamiento del agua es indispensable para garantizar su pureza. India enfrenta uno de los mayores retos de contaminación fluvial del mundo: crecimiento industrial acelerado, alta densidad poblacional y vertimientos sin tratamiento previo degradan sus ríos.</p>
+      <p>Este proyecto aplica <strong>Procesamiento de Alto Volumen de Datos (PAVD)</strong> sobre mediciones fisicoquímicas y biológicas de 18 estados, con el objetivo de construir un <strong>Índice de Calidad del Agua (WQI)</strong> y predecirlo mediante dos enfoques de Machine Learning.</p>
+      <div class="alert yellow" style="margin-top:18px;">
+        <strong>Referencia bibliográfica:</strong> El cálculo del WQI sigue la metodología de pesos ponderados publicada en <em>IntechOpen, Capítulo 69568</em>.
+      </div>
+    </div>
+    <div>
+      <h3>Metodología</h3>
+      <div class="steps" style="flex-direction:column; gap:12px;">
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="step-num" style="flex-shrink:0;">1</div>
+          <div><strong>Importación desde HDFS</strong><br><span style="font-size:12.5px;color:#6b7a99;">Lectura del CSV en clúster Spark</span></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="step-num" style="flex-shrink:0;">2</div>
+          <div><strong>Preprocesamiento &amp; EDA</strong><br><span style="font-size:12.5px;color:#6b7a99;">Tipos, nulos, estadísticas, visualizaciones</span></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="step-num" style="flex-shrink:0;">3</div>
+          <div><strong>Construcción del WQI</strong><br><span style="font-size:12.5px;color:#6b7a99;">Cálculo mediante pesos bibliográficos</span></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="step-num" style="flex-shrink:0;">4</div>
+          <div><strong>Entrenamiento de modelos</strong><br><span style="font-size:12.5px;color:#6b7a99;">Regresión Lineal (MLlib) + Red Neuronal (Keras)</span></div>
+        </div>
+        <div style="display:flex;align-items:flex-start;gap:14px;">
+          <div class="step-num" style="flex-shrink:0;">5</div>
+          <div><strong>Evaluación &amp; Conclusiones</strong><br><span style="font-size:12.5px;color:#6b7a99;">RMSE, MAE, R² — comparativa final</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<hr class="divider">
+
+<!-- DATOS -->
+<div style="background:var(--gray-light);" id="datos">
+<section>
+  <div class="section-label">02 · Carga de Datos</div>
+  <h2>Dataset: Calidad del Agua — Ríos de la India</h2>
+
+  <div class="metric-grid">
+    <div class="metric-card"><div class="m-val">534</div><div class="m-lbl">Registros originales</div></div>
+    <div class="metric-card"><div class="m-val">11</div><div class="m-lbl">Columnas totales</div></div>
+    <div class="metric-card highlight"><div class="m-val">447</div><div class="m-lbl">Registros tras limpieza</div></div>
+    <div class="metric-card"><div class="m-val">87</div><div class="m-lbl">Filas eliminadas (~16%)</div></div>
+    <div class="metric-card"><div class="m-val">18</div><div class="m-lbl">Estados cubiertos</div></div>
+    <div class="metric-card"><div class="m-val">7</div><div class="m-lbl">Parámetros fisicoquímicos</div></div>
+  </div>
+
+  <!-- Código HDFS -->
+  <div class="code-wrap">
+    <div class="code-title"><span>3 · Carga desde HDFS</span><span class="lang-tag">PySpark</span></div>
+    <pre><span class="cm"># ── Lectura del CSV desde HDFS ───────────────────────────────────</span>
+HDFS_PATH = <span class="st">'hdfs://10.195.34.34:9000/csv/waterquality.csv'</span>
+
+df00 = (sparkS.read
+        .format(<span class="st">'csv'</span>)
+        .option(<span class="st">'header'</span>, <span class="st">'true'</span>)       <span class="cm"># Primera fila como encabezado</span>
+        .option(<span class="st">'inferSchema'</span>, <span class="st">'false'</span>) <span class="cm"># Se hará el casteo manual</span>
+        .option(<span class="st">'nullValue'</span>, <span class="st">'NA'</span>)      <span class="cm"># NA → null</span>
+        .load(HDFS_PATH))
+
+<span class="nb">print</span>(f<span class="st">'Filas: {df00.count()} | Columnas: {len(df00.columns)}'</span>)</pre>
+  </div>
+
+  <!-- Descripción de columnas -->
+  <h3>Descripción de Variables</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Columna</th><th>Descripción</th><th>Unidad</th><th>Tipo Final</th></tr></thead>
+      <tbody>
+        <tr><td><code>STATION CODE</code></td><td>Código de la estación de medición</td><td>—</td><td>int</td></tr>
+        <tr><td><code>LOCATIONS</code></td><td>Ubicación geográfica del punto de muestreo</td><td>—</td><td>string</td></tr>
+        <tr><td><code>STATE</code></td><td>Estado de la India</td><td>—</td><td>string</td></tr>
+        <tr><td><code>TEMP</code></td><td>Temperatura del agua</td><td>°C</td><td>float</td></tr>
+        <tr><td><code>DO</code></td><td>Oxígeno Disuelto — mayor = mejor calidad</td><td>mg/L</td><td>float</td></tr>
+        <tr><td><code>pH</code></td><td>Acidez/alcalinidad del agua</td><td>adim.</td><td>float</td></tr>
+        <tr><td><code>CONDUCTIVITY</code></td><td>Conductividad eléctrica — agua pura = baja</td><td>μS/cm</td><td>float</td></tr>
+        <tr><td><code>BOD</code></td><td>Demanda Bioquímica de Oxígeno — mayor = más materia orgánica</td><td>mg/L</td><td>float</td></tr>
+        <tr><td><code>NITRATE_N_NITRITE_N</code></td><td>Nitratos/Nitritos — altas concentraciones degradan calidad</td><td>mg/L</td><td>float</td></tr>
+        <tr><td><code>FECAL_COLIFORM</code></td><td>Bacterias coliformes fecales</td><td>UFC/100mL</td><td>float</td></tr>
+        <tr><td><code>TOTAL_COLIFORM</code></td><td>Coliformes totales <em>(eliminada — alta correlación con FC)</em></td><td>UFC/100mL</td><td>eliminada</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Valores nulos -->
+  <h3 style="margin-top:28px;">Valores Nulos Detectados (antes de limpieza)</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Columna</th><th>Nulos</th><th>Estado</th></tr></thead>
+      <tbody>
+        <tr><td>TEMP</td><td>5</td><td><span class="tag-null">Con nulos</span></td></tr>
+        <tr><td>DO</td><td>2</td><td><span class="tag-null">Con nulos</span></td></tr>
+        <tr><td>pH</td><td>0</td><td><span class="tag-ok">Limpio</span></td></tr>
+        <tr><td>CONDUCTIVITY</td><td>30</td><td><span class="tag-null">Con nulos</span></td></tr>
+        <tr><td>BOD</td><td>6</td><td><span class="tag-null">Con nulos</span></td></tr>
+        <tr><td>NITRATE_N_NITRITE_N</td><td>2</td><td><span class="tag-null">Con nulos</span></td></tr>
+        <tr><td>FECAL_COLIFORM</td><td>82</td><td><span class="tag-null">Mayor número</span></td></tr>
+        <tr><td>TOTAL_COLIFORM</td><td>39</td><td><span class="tag-null">Con nulos</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="alert">Se eliminaron filas con cualquier nulo en columnas predictoras. El dataset pasó de <strong>534 → 447 registros</strong> (≈16% de pérdida), garantizando integridad total en el set de entrenamiento.</div>
+
+  <!-- Código limpieza -->
+  <div class="code-wrap">
+    <div class="code-title"><span>5 · Limpieza vía SQL en Spark</span><span class="lang-tag">PySpark SQL</span></div>
+    <pre><span class="cm"># Vista SQL temporal sobre df00</span>
+df00.createOrReplaceTempView(<span class="st">'df00_sql'</span>)
+
+df01 = sparkS.sql(
+    <span class="st">'SELECT * FROM df00_sql '</span>
+    <span class="st">'WHERE TEMP IS NOT NULL '</span>
+    <span class="st">'  AND DO IS NOT NULL '</span>
+    <span class="st">'  AND CONDUCTIVITY IS NOT NULL '</span>
+    <span class="st">'  AND BOD IS NOT NULL '</span>
+    <span class="st">'  AND FECAL_COLIFORM IS NOT NULL'</span>
+)
+<span class="nb">print</span>(f<span class="st">'Filas originales : {df00.count()}'</span>)   <span class="cm"># 534</span>
+<span class="nb">print</span>(f<span class="st">'Filas tras filtro: {df01.count()}'</span>)  <span class="cm"># 447</span></pre>
+  </div>
+</section>
+</div>
+
+<hr class="divider">
+
+<!-- EDA -->
+<div class="section-wrapper" id="eda">
+<section>
+  <div class="section-label">03 · Análisis Exploratorio de Datos (EDA)</div>
+  <h2>Distribución &amp; Comportamiento de los Parámetros</h2>
+
+  <!-- Estadísticas descriptivas -->
+  <h3>Estadísticas Descriptivas</h3>
+  <div class="table-wrap" style="margin-bottom:32px;">
+    <table>
+      <thead><tr><th>Estadístico</th><th>TEMP (°C)</th><th>DO (mg/L)</th><th>pH</th><th>CONDUCTIVITY (μS/cm)</th><th>BOD (mg/L)</th><th>Nitratos (mg/L)</th><th>Col. Fecales (UFC)</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Count</strong></td><td>529</td><td>532</td><td>534</td><td>504</td><td>528</td><td>532</td><td>452</td></tr>
+        <tr><td><strong>Media</strong></td><td>25.24</td><td>6.39</td><td>7.80</td><td>684.98</td><td>5.34</td><td>1.38</td><td>7,384</td></tr>
+        <tr><td><strong>Desv. Est.</strong></td><td>3.45</td><td>1.62</td><td>0.65</td><td>1,769.33</td><td>8.50</td><td>2.80</td><td>30,714</td></tr>
+        <tr><td><strong>Mín</strong></td><td>10.5</td><td>0.0</td><td>6.3</td><td>39.0</td><td>0.2</td><td>0.0</td><td>0</td></tr>
+        <tr><td><strong>Máx</strong></td><td>33.8</td><td>16.3</td><td>14.7</td><td>24,062</td><td>75.6</td><td>45.5</td><td>310,417</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Boxplot -->
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <h3>Distribución de Parámetros — Detección de Outliers</h3>
+      <span class="chart-tag">Boxplot · 5 variables</span>
+    </div>
+    <div class="chart-img"><img src="Images/Distribución de Parámetros.png" alt="Distribución de Parámetros"></div>
+    <div class="chart-insight">
+      <div class="insight-icon">📊</div>
+      <div class="insight-text">
+        <strong>Conductividad y Coliformes Fecales</strong> concentran la mayor dispersión y cantidad de valores extremos. La conductividad alcanza hasta <strong>24,062 μS/cm</strong> con mediana cercana a 0, evidenciando contaminación puntual severa. El BOD presenta outliers por encima de <strong>75 mg/L</strong>, triplicando el límite aceptable de 3 mg/L. El OD y el pH se mantienen relativamente estables, sugiriendo que la mayoría de ríos conservan condiciones de oxigenación básicas.
+      </div>
+    </div>
+  </div>
+
+  <!-- DO y pH -->
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <h3>Parámetros DO y pH — Calidad del Agua</h3>
+      <span class="chart-tag">Serie temporal · 447 estaciones</span>
+    </div>
+    <div class="chart-img"><img src="Images/Parámetros DO y pH.png" alt="DO y pH"></div>
+    <div class="chart-insight">
+      <div class="insight-icon">💧</div>
+      <div class="insight-text">
+        El <strong>Oxígeno Disuelto</strong> (azul) oscila principalmente entre 4–9 mg/L, con caídas puntuales a 0 que señalan zonas de hipoxia crítica. El <strong>pH</strong> (naranja) se mantiene cerca de 8 (levemente alcalino), con picos excepcionales por encima de 13 que indican contaminación industrial. Los límites de referencia (líneas punteadas) muestran que la mayoría de estaciones satisfacen los estándares mínimos de pH, pero el DO presenta violaciones frecuentes.
+      </div>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <!-- BOD y Nitratos -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <h3>BOD y Nitratos/Nitritos</h3>
+        <span class="chart-tag">Contaminación orgánica</span>
+      </div>
+      <div class="chart-img"><img src="Images/Parámetros BOD y Nitratos:Nitritos.png" alt="BOD y Nitratos"></div>
+      <div class="chart-insight">
+        <div class="insight-icon">🧪</div>
+        <div class="insight-text">El <strong>BOD</strong> (rojo) supera con frecuencia el límite de 3 mg/L (línea punteada), con picos de hasta 75 mg/L que indican alta carga orgánica. Los <strong>nitratos/nitritos</strong> (verde) son generalmente bajos, pero sus picos coinciden con zonas agrícolas de alto riego.</div>
+      </div>
+    </div>
+    <!-- Conductividad y CF -->
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <h3>Conductividad y Coliformes Fecales</h3>
+        <span class="chart-tag">Parámetros de contaminación</span>
+      </div>
+      <div class="chart-img"><img src="Images/Conductividad y Coliformes Fecales.png" alt="Conductividad y CF"></div>
+      <div class="chart-insight">
+        <div class="insight-icon">⚡</div>
+        <div class="insight-text">Los <strong>Coliformes Fecales</strong> (escala log, marrón) presentan la mayor variabilidad del dataset — desde 1 hasta más de 100,000 UFC/100mL. La <strong>Conductividad</strong> (púrpura) muestra picos aislados de alta concentración salina/iónica, sugiriendo descargas industriales puntuales.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<hr class="divider">
+
+<!-- WQI -->
+<div style="background:var(--gray-light);" id="wqi">
+<section>
+  <div class="section-label">04 · Índice de Calidad del Agua (WQI)</div>
+  <h2>Construcción del WQI y Análisis Geográfico</h2>
+
+  <div class="grid-2" style="align-items:start; margin-bottom:32px;">
+    <div>
+      <p>El WQI se construyó como una <strong>suma ponderada</strong> de subíndices calculados para cada parámetro, siguiendo la metodología estándar de la referencia bibliográfica. Cada parámetro tiene un peso proporcional a su impacto en la calidad del agua.</p>
+      <div class="code-wrap" style="margin-top:16px;">
+        <div class="code-title"><span>Pesos WQI</span><span class="lang-tag">Referencia bibliográfica</span></div>
+        <pre><span class="cm"># Pesos por parámetro (suman 100)</span>
+pesos = {
+    <span class="st">'pH'</span>           : <span class="nu">16.50</span>,   <span class="cm"># %</span>
+    <span class="st">'DO'</span>           : <span class="nu">28.10</span>,   <span class="cm"># Mayor peso</span>
+    <span class="st">'CONDUCTIVITY'</span> : <span class="nu">9.36</span> <span class="cm"> / 0 si &gt; umbral</span>
+    <span class="st">'BOD'</span>          : <span class="nu">0.72</span>,
+    <span class="st">'Nitratos'</span>     : <span class="nu">2.80</span>,
+    <span class="st">'Fecal_CF'</span>     : <span class="nu">28.10</span>,   <span class="cm"># Mayor peso</span>
+}</pre>
+      </div>
+    </div>
+    <div>
+      <h3>Pesos del WQI por Parámetro</h3>
+      <div class="weight-bar-row">
+        <div class="weight-bar-label">DO (Oxígeno Disuelto)</div>
+        <div class="weight-bar-track"><div class="weight-bar-fill" style="width:100%"></div></div>
+        <div class="weight-bar-val">28.1%</div>
+      </div>
+      <div class="weight-bar-row">
+        <div class="weight-bar-label">Coliformes Fecales</div>
+        <div class="weight-bar-track"><div class="weight-bar-fill" style="width:100%"></div></div>
+        <div class="weight-bar-val">28.1%</div>
+      </div>
+      <div class="weight-bar-row">
+        <div class="weight-bar-label">pH</div>
+        <div class="weight-bar-track"><div class="weight-bar-fill" style="width:59%"></div></div>
+        <div class="weight-bar-val">16.5%</div>
+      </div>
+      <div class="weight-bar-row">
+        <div class="weight-bar-label">Conductividad</div>
+        <div class="weight-bar-track"><div class="weight-bar-fill yellow" style="width:33%"></div></div>
+        <div class="weight-bar-val">9.36%</div>
+      </div>
+      <div class="weight-bar-row">
+        <div class="weight-bar-label">Nitratos/Nitritos</div>
+        <div class="weight-bar-track"><div class="weight-bar-fill yellow" style="width:10%"></div></div>
+        <div class="weight-bar-val">2.80%</div>
+      </div>
+      <div class="weight-bar-row">
+        <div class="weight-bar-label">BOD</div>
+        <div class="weight-bar-track"><div class="weight-bar-fill yellow" style="width:2.5%"></div></div>
+        <div class="weight-bar-val">0.72%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categorías de calidad -->
+  <div class="grid-2">
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <h3>Distribución de Categorías WQI</h3>
+        <span class="chart-tag">447 estaciones</span>
+      </div>
+      <div class="chart-img"><img src="Images/Distribución de Categorias de Calidad.png" alt="Categorías de Calidad"></div>
+      <div class="chart-insight">
+        <div class="insight-icon">📉</div>
+        <div class="insight-text">
+          La categoría <strong>Baja</strong> (WQI 50–75) domina con 271 estaciones (~60%), seguida de <strong>Buena</strong> (95) y <strong>Muy Baja</strong> (70). Solo <strong>11 estaciones</strong> alcanzan categoría Excelente (WQI &lt; 25). Esto indica que la mayoría de los ríos monitoreados presentan agua de calidad moderada a deficiente, con necesidad urgente de intervención.
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <h3>WQI Medio por Estado de la India</h3>
+        <span class="chart-tag">Ranking estatal</span>
+      </div>
+      <div class="chart-img"><img src="Images/WQI Medio por Estado de la India.png" alt="WQI por Estado"></div>
+      <div class="chart-insight">
+        <div class="insight-icon">🏆</div>
+        <div class="insight-text">
+          <strong>Punjab</strong> tiene el WQI más bajo (37.2 — mejor calidad), posiblemente por menor carga industrial comparativa. <strong>Kerala</strong> presenta el WQI más alto (83.9) a pesar de su imagen ecológica, sugiriendo alta presión turística y agrícola. La mayoría de estados oscila entre 50–70, en la franja de calidad "Baja". <em>Nota: menor WQI = mejor calidad en esta escala.</em>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mapa -->
+  <div class="chart-card" style="margin-top:4px;">
+    <div class="chart-card-header">
+      <h3>Mapa del Índice de Calidad del Agua por Estado — India</h3>
+      <span class="chart-tag">Visualización geoespacial</span>
+    </div>
+    <div class="chart-img"><img src="Images/Índice de Calidad del Agua (WQI) por Estado.png" alt="Mapa WQI India"></div>
+    <div class="chart-insight">
+      <div class="insight-icon">🗺️</div>
+      <div class="insight-text">
+        El mapa confirma que la mayoría del territorio indio (naranja: WQI 50–75) presenta calidad <strong>moderada a baja</strong>. La zona noroccidental (<strong>Himachal Pradesh</strong>) resalta en rojo oscuro (WQI 75–100) como zona de mayor deterioro, mientras que el sur muestra condiciones similares en Kerala. <strong>Punjab</strong> y estados del noreste son las únicas regiones que rondan el umbral de calidad "Buena".
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<hr class="divider">
+
+<!-- MODELOS -->
+<div class="section-wrapper" id="modelos">
+<section>
+  <div class="section-label">05 · Entrenamiento de Modelos</div>
+  <h2>Regresión Lineal (MLlib) vs. Red Neuronal (Keras)</h2>
+
+  <div class="grid-2" style="margin-bottom:32px; align-items:start;">
+    <!-- MLlib -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Regresión Lineal — MLlib</h3>
+        <span class="badge">Distribuido</span>
+      </div>
+      <div class="card-body">
+        <p style="font-size:13.5px;">Modelo lineal distribuido ejecutado en el clúster Spark. Utiliza <code>VectorAssembler</code> para construir el vector de features y <code>StandardScaler</code> para normalizar. El pipeline encadena ambas transformaciones con el modelo de regresión.</p>
+        <div class="code-wrap" style="margin-top:12px;">
+          <div class="code-title"><span>Pipeline MLlib</span><span class="lang-tag">PySpark ML</span></div>
+          <pre><span class="cm"># Ensamblado de features</span>
+assembler = VectorAssembler(
+    inputCols=[<span class="st">'DO','pH','CONDUCTIVITY',</span>
+               <span class="st">'BOD','NITRATE_N_NITRITE_N',</span>
+               <span class="st">'FECAL_COLIFORM'</span>],
+    outputCol=<span class="st">'features_raw'</span>)
+
+scaler = StandardScaler(
+    inputCol=<span class="st">'features_raw'</span>,
+    outputCol=<span class="st">'features'</span>)
+
+lr = LinearRegression(
+    featuresCol=<span class="st">'features'</span>,
+    labelCol=<span class="st">'WQI'</span>)
+
+pipeline = Pipeline(stages=[assembler, scaler, lr])
+model = pipeline.fit(train_df)</pre>
+        </div>
+      </div>
+    </div>
+
+    <!-- Keras -->
+    <div class="card">
+      <div class="card-header">
+        <h3>Red Neuronal — Keras/TensorFlow</h3>
+        <span class="badge">Driver local</span>
+      </div>
+      <div class="card-body">
+        <p style="font-size:13.5px;">Red densa de 3 capas con regularización <code>Dropout</code> y parada anticipada (<code>EarlyStopping</code>) para prevenir sobreajuste. Los datos se convierten de Spark DataFrame a Pandas/NumPy para el entrenamiento en TensorFlow.</p>
+        <div class="code-wrap" style="margin-top:12px;">
+          <div class="code-title"><span>Arquitectura Keras</span><span class="lang-tag">TensorFlow / Keras</span></div>
+          <pre>model = Sequential([
+    Dense(<span class="nu">64</span>, activation=<span class="st">'relu'</span>,
+          input_shape=(X_train.shape[<span class="nu">1</span>],)),
+    Dropout(<span class="nu">0.2</span>),
+    Dense(<span class="nu">32</span>, activation=<span class="st">'relu'</span>),
+    Dropout(<span class="nu">0.1</span>),
+    Dense(<span class="nu">1</span>)  <span class="cm"># Salida: WQI predicho</span>
+])
+model.compile(optimizer=<span class="st">'adam'</span>, loss=<span class="st">'mse'</span>,
+              metrics=[<span class="st">'mae'</span>])
+
+es = EarlyStopping(monitor=<span class="st">'val_loss'</span>,
+                   patience=<span class="nu">10</span>,
+                   restore_best_weights=<span class="nb">True</span>)</pre>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Convergencia Keras -->
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <h3>Convergencia del Modelo Keras — Curvas de Pérdida</h3>
+      <span class="chart-tag">~38 épocas · EarlyStopping</span>
+    </div>
+    <div class="chart-img"><img src="Images/Convergencia del Modelo Keras.png" alt="Convergencia Keras"></div>
+    <div class="chart-insight">
+      <div class="insight-icon">📈</div>
+      <div class="insight-text">
+        La curva MSE (izquierda) muestra una <strong>convergencia rápida en las primeras 5 épocas</strong>, con la pérdida de entrenamiento y validación alineándose hacia el final. El MAE (derecha) confirma que el error absoluto de entrenamiento (verde) converge alrededor de 3–4 unidades WQI, mientras la validación (rojo punteado) es algo más variable. El <strong>EarlyStopping</strong> actuó correctamente al frenar el entrenamiento antes del sobreajuste, evidenciado por la estabilización de ambas curvas.
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<hr class="divider">
+
+<!-- RESULTADOS -->
+<div style="background:var(--gray-light);" id="resultados">
+<section>
+  <div class="section-label">06 · Resultados &amp; Evaluación</div>
+  <h2>Desempeño Comparativo de los Modelos</h2>
+
+  <!-- Comparativa lado a lado -->
+  <div class="compare-row" style="margin-bottom:32px; flex-wrap:wrap;">
+    <div class="compare-col winner">
+      <div class="compare-col-head">
+        Regresión Lineal — MLlib
+        <span class="winner-badge">★ Mejor</span>
+      </div>
+      <div class="compare-col-body">
+        <div class="compare-metric">
+          <span class="name">RMSE</span>
+          <span class="val good">0.0726</span>
+        </div>
+        <div class="compare-metric">
+          <span class="name">MAE</span>
+          <span class="val good">0.0200</span>
+        </div>
+        <div class="compare-metric">
+          <span class="name">R²</span>
+          <span class="val good">1.0000</span>
+        </div>
+        <div class="compare-metric">
+          <span class="name">Entorno</span>
+          <span style="font-size:12px;color:#6b7a99;">Distribuido (Spark Cluster)</span>
+        </div>
+      </div>
+    </div>
+    <div class="compare-col">
+      <div class="compare-col-head">Red Neuronal — Keras</div>
+      <div class="compare-col-body">
+        <div class="compare-metric">
+          <span class="name">RMSE</span>
+          <span class="val bad">4.2619</span>
+        </div>
+        <div class="compare-metric">
+          <span class="name">MAE</span>
+          <span class="val bad">3.0545</span>
+        </div>
+        <div class="compare-metric">
+          <span class="name">R²</span>
+          <span class="val good">0.9187</span>
+        </div>
+        <div class="compare-metric">
+          <span class="name">Entorno</span>
+          <span style="font-size:12px;color:#6b7a99;">Driver local (TensorFlow)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gráfica comparativa -->
+  <div class="chart-card">
+    <div class="chart-card-header">
+      <h3>Comparación de Métricas: RMSE · MAE · R²</h3>
+      <span class="chart-tag">Evaluación test set</span>
+    </div>
+    <div class="chart-img"><img src="Images/Comparacion de Modelos de Prediccion del WQI.png" alt="Comparación Modelos"></div>
+    <div class="chart-insight">
+      <div class="insight-icon">🎯</div>
+      <div class="insight-text">
+        La <strong>Regresión Lineal de MLlib</strong> obtiene un R²=1.0000 y RMSE=0.0726, prácticamente perfecto — un resultado esperable dado que el WQI <em>es</em> una combinación lineal exacta de los features. La <strong>Red Neuronal</strong> con R²=0.9187 y RMSE=4.26 también es un modelo robusto, pero su naturaleza no lineal no añade ventaja sobre una relación lineal pura. Ambos modelos son válidos; MLlib además escala naturalmente al entorno distribuido de Spark.
+      </div>
+    </div>
+  </div>
+
+  <!-- Scatter plots -->
+  <div class="grid-2">
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <h3>Regresión Lineal MLlib</h3>
+        <span class="chart-tag">Predicción vs Real</span>
+      </div>
+      <div class="chart-img"><img src="Images/Regresion Lineal MLlib — Prediccion vs Real.png" alt="MLlib scatter"></div>
+      <div class="chart-insight">
+        <div class="insight-icon">📐</div>
+        <div class="insight-text">Los puntos se alinean de forma <strong>casi perfecta</strong> sobre la línea de predicción ideal (roja punteada), confirmando el R²≈1. La dispersión mínima se debe únicamente a la precisión numérica del cómputo distribuido en punto flotante.</div>
+      </div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-card-header">
+        <h3>Red Neuronal Keras</h3>
+        <span class="chart-tag">Entrenamiento y Prueba</span>
+      </div>
+      <div class="chart-img"><img src="Images/Red Neuronal Keras — Prediccion vs WQI Real.png" alt="Keras scatter"></div>
+      <div class="chart-insight">
+        <div class="insight-icon">🧠</div>
+        <div class="insight-text">El scatter de entrenamiento (R²=0.9484) y prueba (R²=0.9187) muestra <strong>buena generalización</strong> sin sobreajuste severo. La dispersión es mayor en el rango bajo (WQI 20–40), donde la red tiene menos ejemplos de entrenamiento. Los outliers superiores se predicen con alta precisión.</div>
+      </div>
+    </div>
+  </div>
+</section>
+</div>
+
+<hr class="divider">
+
+<!-- CONCLUSIONES -->
+<div class="section-wrapper" id="conclusiones">
+<section>
+  <div class="section-label">07 · Conclusiones &amp; Recomendaciones</div>
+  <h2>Hallazgos Clave del Proyecto</h2>
+
+  <div class="conclusion-grid" style="margin-bottom:32px;">
+    <div class="conclusion-card">
+      <h4>📦 Sobre los Datos</h4>
+      <ul>
+        <li>El dataset contiene <strong>534 registros</strong> de 18 estados con 7 parámetros fisicoquímicos.</li>
+        <li>Se detectaron <strong>valores nulos reales</strong> en varias columnas. Se eliminaron 87 filas (~16%).</li>
+        <li><strong>Coliformes Fecales y Conductividad</strong> presentan la mayor dispersión con outliers extremos, indicando contaminación puntual severa.</li>
+      </ul>
+    </div>
+    <div class="conclusion-card yellow-top">
+      <h4>💧 Sobre el WQI</h4>
+      <ul>
+        <li>La mayoría de estaciones presenta agua de categoría <strong>Baja</strong> (WQI 50–75).</li>
+        <li>Estados con WQI &gt; 75 corresponden a zonas industriales o alta densidad poblacional.</li>
+        <li><strong>DO y Coliformes Fecales</strong> tienen el mayor peso (28.1% c/u), resaltando el control biológico y de oxigenación como prioridades.</li>
+      </ul>
+    </div>
+    <div class="conclusion-card green-top">
+      <h4>🤖 Sobre los Modelos</h4>
+      <ul>
+        <li><strong>MLlib</strong> es la solución escalable ideal para grandes volúmenes en el clúster Spark — R²=1.</li>
+        <li><strong>Keras</strong> captura relaciones no lineales; dado que el WQI es lineal, ambos modelos rinden de forma similar.</li>
+        <li><strong>EarlyStopping y Dropout</strong> en Keras previenen sobreajuste correctamente.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Recomendaciones para Trabajo Futuro</h3>
+  <div class="grid-2" style="gap:16px;">
+    <div class="alert">
+      <strong>1. Series temporales:</strong> Ampliar el dataset con datos longitudinales para detectar tendencias de calidad a lo largo del tiempo y modelar estacionalidad.
+    </div>
+    <div class="alert yellow">
+      <strong>2. Más features:</strong> Incluir turbidez, metales pesados y temperatura del suelo para mejorar la capacidad predictiva de los modelos.
+    </div>
+    <div class="alert green">
+      <strong>3. Optimización:</strong> Aplicar <code>CrossValidator</code> de MLlib o <code>GridSearchCV</code> de Scikit-Learn para encontrar los mejores hiperparámetros de forma sistemática.
+    </div>
+    <div class="alert">
+      <strong>4. Producción en tiempo real:</strong> Desplegar con <strong>Spark Structured Streaming</strong> para predicciones en tiempo real sobre datos de sensores IoT instalados en ríos.
+    </div>
+  </div>
+
+  <div class="alert" style="margin-top:24px;border-color:var(--blue-deep);background:#e8eef8;">
+    <strong>Nota metodológica:</strong> El WQI calculado es una guía académica. Para estudios de salud pública se recomienda validar con estándares <strong>BIS (Bureau of Indian Standards)</strong> y <strong>WHO</strong>.
+  </div>
+</section>
+</div>
+
+<hr class="divider">
+
+<!-- FOOTER -->
+<footer>
+  <strong>Procesamiento de Alto Volumen de Datos — Calidad del Agua India</strong><br>
+  Juan Sebastián Bravo Santacruz · Pontificia Universidad Javeriana · Mayo 2026<br>
+  <span style="opacity:.5;font-size:11px;margin-top:8px;display:block;">PySpark 3.5.5 · TensorFlow/Keras · Apache Hadoop HDFS</span>
+</footer>
+
+</body>
+</html>
