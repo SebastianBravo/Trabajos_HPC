@@ -469,6 +469,8 @@
   <a href="#resultados">Resultados</a>
   <span class="nav-dot">◆</span>
   <a href="#conclusiones">Conclusiones</a>
+  <span class="nav-dot">◆</span>
+  <a href="#referencias">Referencias</a>
 </nav>
 
 <!-- HERO -->
@@ -1019,51 +1021,70 @@ es = EarlyStopping(monitor=<span class="st">'val_loss'</span>,
   <h2>Hallazgos Clave del Proyecto</h2>
 
   <div class="conclusion-grid" style="margin-bottom:32px;">
-    <div class="conclusion-card">
-      <h4>📦 Sobre los Datos</h4>
+    <!-- <div class="conclusion-card">
+      <h4>📊 Análisis exploratorio</h4>
       <ul>
-        <li>El dataset contiene <strong>534 registros</strong> de 18 estados con 7 parámetros fisicoquímicos.</li>
-        <li>Se detectaron <strong>valores nulos reales</strong> en varias columnas. Se eliminaron 87 filas (~16%).</li>
-        <li><strong>Coliformes Fecales y Conductividad</strong> presentan la mayor dispersión con outliers extremos, indicando contaminación puntual severa.</li>
+        <li>Se eliminaron registros incompletos (~16% de los datos), mejorando consistencia a costa de información.</li>
+        <li>Las variables con más nulos fueron <strong>FECAL_COLIFORM</strong> y <strong>CONDUCTIVITY</strong>, afectando el análisis microbiológico y fisicoquímico.</li>
+        <li>Alta dispersión y outliers en <strong>CONDUCTIVITY, BOD</strong> y <strong>FECAL_COLIFORM</strong>, indicando puntos de contaminación puntuales.</li>
+        <li>El pH es relativamente estable; el <strong>DO</strong> muestra mayor variabilidad relevante para la vida acuática.</li>
       </ul>
-    </div>
+    </div> -->
     <div class="conclusion-card yellow-top">
-      <h4>💧 Sobre el WQI</h4>
+      <h4>🔎 Análisis de outliers</h4>
       <ul>
-        <li>La mayoría de estaciones presenta agua de categoría <strong>Baja</strong> (WQI 50–75).</li>
-        <li>Estados con WQI &gt; 75 corresponden a zonas industriales o alta densidad poblacional.</li>
-        <li><strong>DO y Coliformes Fecales</strong> tienen el mayor peso (28.1% c/u), resaltando el control biológico y de oxigenación como prioridades.</li>
+        <li>Los boxplots evidencian outliers en varias variables; la conductividad está fuertemente sesgada hacia valores altos.</li>
+        <li>El BOD presenta outliers significativos que sugieren descargas orgánicas puntuales.</li>
+        <li>Coliformes fecales: media ≈ 7.384 vs máximo 310.417, mostrando una distribución muy sesgada por extremos.</li>
       </ul>
     </div>
     <div class="conclusion-card green-top">
-      <h4>🤖 Sobre los Modelos</h4>
+      <h4>💧 Interpretación del WQI</h4>
       <ul>
-        <li><strong>MLlib</strong> es la solución escalable ideal para grandes volúmenes en el clúster Spark — R²=1.</li>
-        <li><strong>Keras</strong> captura relaciones no lineales; dado que el WQI es lineal, ambos modelos rinden de forma similar.</li>
-        <li><strong>EarlyStopping y Dropout</strong> en Keras previenen sobreajuste correctamente.</li>
+        <li>Ponderaciones clave: DO 28.1%, Coliformes 28.1%, Conductividad 23.4%, pH 16.5%, Nitratos 2.8%, BOD 0.9%.</li>
+        <li>Distribución por categoría: <strong>Baja</strong> 271 (≈60.63%), <strong>Buena</strong> 95 (≈21.25%), <strong>Muy Baja</strong> 70 (≈15.66%), <strong>Excelente</strong> 11 (≈2.46%).</li>
+        <li>Predomina calidad intermedia-baja; hay diferencias regionales (ej. Punjab mejor, Kerala con pocos puntos y más variable).</li>
+        <li>Promedios estatales con pocas estaciones son menos representativos y sensibles a outliers.</li>
+      </ul>
+    </div>
+    <div class="conclusion-card">
+      <h4>🤖 Modelos utilizados</h4>
+      <ul>
+        <li>La Regresión Lineal superó a la Red Neuronal en todas las métricas; la naturaleza lineal del WQI favorece modelos lineales.</li>
+        <li>Modelos complejos (redes) no aportaron ventaja aquí; la Regresión Lineal es más interpretable y eficiente.</li>
+        <li>MLlib ofrece escalabilidad distribuida adecuada para volúmenes mayores; Keras sigue siendo útil si aparecen relaciones no lineales o más datos.</li>
+      </ul>
+    </div>
+    <div class="conclusion-card yellow-top">
+      <h4>📝 Conclusiones generales</h4>
+      <ul>
+        <li>La calidad del agua es heterogénea pero con predominio de niveles <strong>Baja</strong>, impulsada por coliformes, conductividad y DO.</li>
+        <li>PySpark y HDFS permitieron un pipeline reproducible y escalable; MLlib resultó ser la mejor opción práctica.</li>
+        <li>Recomendar seguimiento focalizado en estaciones con outliers, mejorar muestreo por estado y considerar imputación robusta si se requiere preservar más registros.</li>
       </ul>
     </div>
   </div>
 
-  <h3>Recomendaciones para Trabajo Futuro</h3>
-  <div class="grid-2" style="gap:16px;">
-    <div class="alert">
-      <strong>1. Series temporales:</strong> Ampliar el dataset con datos longitudinales para detectar tendencias de calidad a lo largo del tiempo y modelar estacionalidad.
-    </div>
-    <div class="alert yellow">
-      <strong>2. Más features:</strong> Incluir turbidez, metales pesados y temperatura del suelo para mejorar la capacidad predictiva de los modelos.
-    </div>
-    <div class="alert green">
-      <strong>3. Optimización:</strong> Aplicar <code>CrossValidator</code> de MLlib o <code>GridSearchCV</code> de Scikit-Learn para encontrar los mejores hiperparámetros de forma sistemática.
-    </div>
-    <div class="alert">
-      <strong>4. Producción en tiempo real:</strong> Desplegar con <strong>Spark Structured Streaming</strong> para predicciones en tiempo real sobre datos de sensores IoT instalados en ríos.
-    </div>
+</section>
+</div>
+
+<!-- Sección de Referencias -->
+<div class="section-wrapper" id="referencias">
+<section>
+  <div class="section-label">13 · Referencias</div>
+  <h2>Referencias</h2>
+
+  <div class="table-wrap" style="margin-top:8px;">
+    <ol>
+      <li>Apache Spark. <em>PySpark MLlib Linear Regression Documentation</em>. Documentación oficial utilizada como referencia para el entrenamiento del modelo de Regresión Lineal con MLlib. <a href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.regression.LinearRegression.html">https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.regression.LinearRegression.html</a></li>
+      <li>Keras. <em>The Sequential Model</em>. Documentación oficial utilizada como referencia para la construcción de la red neuronal secuencial. <a href="https://keras.io/guides/sequential_model/">https://keras.io/guides/sequential_model/</a></li>
+      <li>TensorFlow. <em>tf.keras.Sequential</em>. Documentación oficial sobre el uso de modelos secuenciales en Keras/TensorFlow. <a href="https://www.tensorflow.org/api_docs/python/tf/keras/Sequential">https://www.tensorflow.org/api_docs/python/tf/keras/Sequential</a></li>
+      <li>Scikit-learn. <em>Metrics and scoring: quantifying the quality of predictions</em>. Referencia para la interpretación de métricas de regresión como MAE, RMSE y R². <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">https://scikit-learn.org/stable/modules/model_evaluation.html</a></li>
+      <li>Scikit-learn. <em>r2_score</em>. Referencia específica para la interpretación del coeficiente de determinación R². <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html">https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html</a></li>
+      <li>Omer, N. H. (2019). <em>Water Quality Parameters</em>. IntechOpen. Referencia utilizada para sustentar la importancia de los parámetros físicos, químicos y biológicos de calidad del agua, como pH, conductividad, oxígeno disuelto, BOD y parámetros microbiológicos. <a href="https://www.intechopen.com/chapters/69568">https://www.intechopen.com/chapters/69568</a></li>
+    </ol>
   </div>
 
-  <div class="alert" style="margin-top:24px;border-color:var(--blue-deep);background:#e8eef8;">
-    <strong>Nota metodológica:</strong> El WQI calculado es una guía académica. Para estudios de salud pública se recomienda validar con estándares <strong>BIS (Bureau of Indian Standards)</strong> y <strong>WHO</strong>.
-  </div>
 </section>
 </div>
 
