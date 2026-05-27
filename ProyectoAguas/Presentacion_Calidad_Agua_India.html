@@ -475,7 +475,7 @@
 
 <!-- HERO -->
 <div class="hero" id="portada">
-  <div class="hero-badge">Procesamiento de Alto Volumen de Datos · PySpark + Keras</div>
+  <div class="hero-badge">Computación de Alto Desempeño · PySpark + Keras</div>
   <h1>Calidad del Agua en<br><span>Ríos de la India</span></h1>
   <p class="hero-sub">Diagnóstico del Índice de Calidad del Agua (WQI) mediante Regresión Lineal distribuida (MLlib) y Red Neuronal profunda (TensorFlow/Keras) sobre datos reales de 18 estados.</p>
   <div class="hero-meta">
@@ -510,7 +510,7 @@
   <div class="grid-2" style="gap:32px; align-items:start;">
     <div>
       <p>El tratamiento del agua es indispensable para garantizar su pureza. India enfrenta uno de los mayores retos de contaminación fluvial del mundo: crecimiento industrial acelerado, alta densidad poblacional y vertimientos sin tratamiento previo degradan sus ríos.</p>
-      <p>Este proyecto aplica <strong>Procesamiento de Alto Volumen de Datos (PAVD)</strong> sobre mediciones fisicoquímicas y biológicas de 18 estados, con el objetivo de construir un <strong>Índice de Calidad del Agua (WQI)</strong> y predecirlo mediante dos enfoques de Machine Learning.</p>
+      <p>Este proyecto aplica <strong>Computación de Alto Desempeño (HPC)</strong> sobre mediciones fisicoquímicas y biológicas de 18 estados, con el objetivo de construir un <strong>Índice de Calidad del Agua (WQI)</strong> y predecirlo mediante dos enfoques de Machine Learning.</p>
       <div class="alert yellow" style="margin-top:18px;">
         <strong>Referencia bibliográfica:</strong> El cálculo del WQI sigue la metodología de pesos ponderados publicada en <em>IntechOpen, Capítulo 69568</em>.
       </div>
@@ -727,6 +727,16 @@ df01 = sparkS.sql(
   <div class="section-label">04 · Índice de Calidad del Agua (WQI)</div>
   <h2>Construcción del WQI y Análisis Geográfico</h2>
 
+  <div class="card" style="margin-top:6px;">
+    <div class="card-header">
+      <h3>Construcción del WQI — Puntajes</h3>
+      <span class="badge">Metodología</span>
+    </div>
+    <div class="card-body">
+      <p style="font-size:13px;color:#6b7a99;">Cada parámetro se transforma en un <strong>puntaje de calidad</strong> (0 / 40 / 60 / 80 / 100) según rangos de la referencia bibliográfica, y luego se pondera. Los rangos iniciales se definieron en el notebook <a href="Clean_ML_Water_Corregido.ipynb">Clean_ML_Water_Corregido.ipynb</a> — <em>Sección 7. Construcción del Índice de Calidad del Agua (WQI)</em>.</p>
+    </div>
+  </div>
+
   <div class="grid-2" style="align-items:start; margin-bottom:32px;">
     <div>
       <p>El WQI se construyó como una <strong>suma ponderada</strong> de subíndices calculados para cada parámetro, siguiendo la metodología estándar de la referencia bibliográfica. Cada parámetro tiene un peso proporcional a su impacto en la calidad del agua.</p>
@@ -789,7 +799,7 @@ pesos = {
       <div class="chart-insight">
         <div class="insight-icon">📉</div>
         <div class="insight-text">
-          La categoría <strong>Baja</strong> (WQI 50–75) domina con 271 estaciones (~60%), seguida de <strong>Buena</strong> (95) y <strong>Muy Baja</strong> (70). Solo <strong>11 estaciones</strong> alcanzan categoría Excelente (WQI &lt; 25). Esto indica que la mayoría de los ríos monitoreados presentan agua de calidad moderada a deficiente, con necesidad urgente de intervención.
+          La categoría <strong>Baja</strong> (WQI 50–75) domina con 271 estaciones (~60%), seguida de <strong>Buena</strong> (95) y <strong>Muy Baja</strong> (70). Solo <strong>11 estaciones</strong> alcanzan categoría Excelente (WQI &lt; 25). Esto indica que la mayoría de los ríos monitoreados presentan agua de calidad moderada a deficiente.
         </div>
       </div>
     </div>
@@ -1092,7 +1102,7 @@ es = EarlyStopping(monitor=<span class="st">'val_loss'</span>,
 
 <!-- FOOTER -->
 <footer>
-  <strong>Procesamiento de Alto Volumen de Datos — Calidad del Agua India</strong><br>
+  <strong>Computación de Alto Desempeño — Calidad del Agua India</strong><br>
   Juan Sebastián Bravo Santacruz · Pontificia Universidad Javeriana · Mayo 2026<br>
   <span style="opacity:.5;font-size:11px;margin-top:8px;display:block;">PySpark 3.5.5 · TensorFlow/Keras · Apache Hadoop HDFS</span>
 </footer>
