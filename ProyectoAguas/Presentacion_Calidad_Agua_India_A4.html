@@ -1,0 +1,1134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calidad del Agua — India | Versión Impresión A4 Horizontal</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@300;400;600;700;800&family=Barlow:wght@300;400;500;600&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════════
+   VARIABLES & RESET
+════════════════════════════════════════════════════════════════ */
+:root {
+  --blue-deep:   #0a1628;
+  --blue-mid:    #1a3a6b;
+  --blue-bright: #1e5fc4;
+  --blue-light:  #3a8ef6;
+  --blue-pale:   #dce9ff;
+  --yellow:      #f5c800;
+  --yellow-light:#fff4a3;
+  --white:       #ffffff;
+  --gray-light:  #f4f6fb;
+  --gray-mid:    #c8d6ee;
+  --text-dark:   #0d1f3c;
+  --text-body:   #2c3e60;
+
+  /* A4 landscape content dimensions */
+  --page-w: 257mm;   /* 297mm - 2×20mm margins */
+  --page-h: 177mm;   /* 210mm - 2×16.5mm margins */
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: 'Barlow', sans-serif;
+  background: #888;
+  color: var(--text-body);
+  font-size: 10pt;
+  line-height: 1.5;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGE SETUP
+════════════════════════════════════════════════════════════════ */
+@page {
+  size: A4 landscape;
+  margin: 16.5mm 20mm;
+}
+
+/* Screen preview: pages as cards */
+.page {
+  width: var(--page-w);
+  min-height: var(--page-h);
+  background: var(--white);
+  position: relative;
+  overflow: hidden;
+  page-break-after: always;
+  break-after: page;
+  margin: 0 auto 24px;
+  box-shadow: 0 4px 32px rgba(0,0,0,.25);
+}
+
+/* Hide shadow + margins when printing */
+@media print {
+  html, body { background: white; }
+  .page {
+    margin: 0;
+    box-shadow: none;
+    width: 257mm;
+    min-height: 177mm;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   COMMON COMPONENTS
+════════════════════════════════════════════════════════════════ */
+
+/* ── page header stripe ── */
+.ph {
+  background: var(--blue-deep);
+  color: var(--white);
+  padding: 6pt 14pt;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 2.5pt solid var(--yellow);
+  height: 26pt;
+}
+.ph-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 12pt; font-weight: 800; letter-spacing: .04em;
+  color: var(--white);
+}
+.ph-title span { color: var(--yellow); }
+.ph-section {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8pt; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gray-mid);
+  background: rgba(255,255,255,.08);
+  padding: 2pt 8pt; border-radius: 2pt;
+}
+.ph-page {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 8pt; color: var(--gray-mid); letter-spacing: .06em;
+}
+
+/* ── page footer stripe ── */
+.pf {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--blue-deep);
+  border-top: 1.5pt solid rgba(245,200,0,.35);
+  padding: 3pt 14pt;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 16pt;
+}
+.pf span {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 7pt; color: var(--gray-mid); letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.pf-num {
+  color: var(--yellow) !important;
+  font-weight: 700;
+}
+
+/* ── content body ── */
+.body {
+  padding: 10pt 14pt 22pt;
+}
+
+/* ── section label ── */
+.slabel {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 7pt; font-weight: 700; letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--blue-bright);
+  margin-bottom: 4pt;
+}
+.slabel::before { content: '●'; color: var(--yellow); margin-right: 5pt; }
+
+/* ── headings ── */
+h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16pt; font-weight: 800;
+  color: var(--blue-deep); line-height: 1.1;
+  margin-bottom: 7pt;
+}
+h2 span { color: var(--blue-bright); }
+h3 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10pt; font-weight: 700;
+  color: var(--blue-mid); margin-bottom: 4pt;
+}
+h4 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 9pt; font-weight: 700;
+  color: var(--blue-deep); margin-bottom: 4pt;
+}
+
+p { font-size: 8.5pt; margin-bottom: 5pt; }
+
+/* ── grids ── */
+.g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10pt; }
+.g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8pt; }
+.g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 7pt; }
+
+/* ── card ── */
+.card {
+  background: var(--white);
+  border: 1pt solid var(--gray-mid);
+  border-radius: 5pt;
+  overflow: hidden;
+}
+.card-hd {
+  background: var(--blue-deep);
+  padding: 5pt 10pt;
+  display: flex; align-items: center; gap: 6pt;
+}
+.card-hd h3 { color: var(--white); margin: 0; font-size: 8.5pt; }
+.badge {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 6.5pt; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase;
+  background: var(--yellow); color: var(--blue-deep);
+  padding: 1pt 5pt; border-radius: 2pt;
+}
+.card-bd { padding: 8pt 10pt; }
+
+/* ── metric card ── */
+.mcard {
+  background: var(--white);
+  border: 1pt solid var(--gray-mid);
+  border-radius: 5pt;
+  padding: 8pt 6pt;
+  text-align: center;
+}
+.mcard .val {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 18pt; font-weight: 800;
+  color: var(--blue-bright); line-height: 1;
+}
+.mcard.hl .val { color: var(--yellow); }
+.mcard .lbl { font-size: 6.5pt; color: #6b7a99; font-weight: 500; margin-top: 2pt; }
+
+/* ── stat strip ── */
+.stat-strip {
+  display: flex;
+  background: rgba(255,255,255,.06);
+  border: 1pt solid rgba(255,255,255,.15);
+  border-radius: 4pt;
+  overflow: hidden;
+  margin-top: 10pt;
+  width: fit-content;
+}
+.stat-item {
+  padding: 8pt 16pt;
+  border-right: 1pt solid rgba(255,255,255,.12);
+  text-align: center;
+}
+.stat-item:last-child { border-right: none; }
+.stat-item .v {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 20pt; font-weight: 800;
+  color: var(--yellow); line-height: 1;
+}
+.stat-item .l {
+  font-size: 6.5pt; color: var(--gray-mid);
+  letter-spacing: .06em; text-transform: uppercase; margin-top: 2pt;
+}
+
+/* ── table ── */
+.tw { overflow: hidden; border-radius: 4pt; border: 1pt solid var(--gray-mid); }
+table { width: 100%; border-collapse: collapse; font-size: 7.5pt; }
+thead th {
+  background: var(--blue-deep);
+  color: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700; letter-spacing: .05em; font-size: 7.5pt;
+  padding: 5pt 8pt; text-align: left;
+}
+tbody tr:nth-child(even) { background: var(--gray-light); }
+tbody td { padding: 4pt 8pt; border-bottom: .5pt solid var(--gray-mid); font-size: 7.5pt; }
+code { font-family: 'Source Code Pro', monospace; font-size: 7pt; background: var(--gray-light); padding: 1pt 3pt; border-radius: 2pt; }
+.tag-null { background: #fee2e2; color: #b91c1c; padding: 1pt 5pt; border-radius: 2pt; font-weight: 700; font-size: 6.5pt; }
+.tag-ok   { background: #dcfce7; color: #15803d; padding: 1pt 5pt; border-radius: 2pt; font-weight: 700; font-size: 6.5pt; }
+
+/* ── code block ── */
+.cw {
+  background: #0d1117;
+  border-radius: 4pt;
+  overflow: hidden;
+  border: .5pt solid rgba(255,255,255,.08);
+}
+.ct {
+  background: #161b22;
+  padding: 3pt 8pt;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.ct span {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 6.5pt; font-weight: 700; letter-spacing: .08em;
+  text-transform: uppercase; color: #8b949e;
+}
+.lt {
+  font-size: 6pt; letter-spacing: .1em;
+  background: rgba(245,200,0,.15);
+  color: var(--yellow);
+  padding: 1pt 5pt; border-radius: 2pt;
+}
+pre {
+  font-family: 'Source Code Pro', monospace;
+  font-size: 7pt; line-height: 1.6;
+  padding: 7pt 10pt;
+  color: #e6edf3; margin: 0;
+  overflow: visible;
+  white-space: pre-wrap;
+}
+.kw { color: #ff7b72; }
+.fn { color: #d2a8ff; }
+.st { color: #a5d6ff; }
+.cm { color: #8b949e; }
+.nb { color: #79c0ff; }
+.nu { color: #f2cc60; }
+
+/* ── weight bars ── */
+.wb-row { display: flex; align-items: center; gap: 6pt; margin-bottom: 4pt; }
+.wb-lbl { width: 100pt; font-size: 7pt; font-weight: 600; color: var(--text-dark); flex-shrink: 0; }
+.wb-track { flex: 1; height: 10pt; background: var(--gray-light); border-radius: 3pt; overflow: hidden; }
+.wb-fill { height: 100%; background: linear-gradient(90deg, var(--blue-bright), var(--blue-light)); border-radius: 3pt; }
+.wb-fill.y { background: linear-gradient(90deg, #e6a800, var(--yellow)); }
+.wb-val { width: 28pt; text-align: right; font-size: 7pt; font-weight: 700; color: var(--blue-mid); }
+
+/* ── alert ── */
+.alert {
+  border-left: 3pt solid var(--blue-bright);
+  background: var(--blue-pale);
+  padding: 5pt 8pt;
+  border-radius: 0 4pt 4pt 0;
+  font-size: 7.5pt;
+}
+.alert.y { border-color: var(--yellow); background: var(--yellow-light); }
+.alert.g { border-color: #16a34a; background: #f0fdf4; }
+
+/* ── chart container ── */
+.chart-box {
+  border: 1pt solid var(--gray-mid);
+  border-radius: 4pt;
+  overflow: hidden;
+  background: #fafbfd;
+}
+.chart-hd {
+  background: linear-gradient(90deg, var(--blue-deep), var(--blue-mid));
+  padding: 4pt 10pt;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.chart-hd h3 { color: var(--white); margin: 0; font-size: 8pt; }
+.chart-tag {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 6.5pt; font-weight: 700;
+  background: rgba(255,255,255,.12);
+  color: var(--yellow); padding: 1pt 6pt;
+  border-radius: 2pt; letter-spacing: .08em; text-transform: uppercase;
+}
+.chart-img { padding: 4pt; background: #fafbfd; }
+.chart-img img { width: 100%; height: auto; display: block; border-radius: 2pt; }
+.chart-note {
+  padding: 4pt 8pt;
+  background: var(--white);
+  border-top: .5pt solid var(--gray-mid);
+  font-size: 7pt; color: var(--text-body);
+}
+.chart-note strong { color: var(--blue-deep); }
+
+/* ── compare cols ── */
+.cmp { display: flex; gap: 10pt; }
+.cmp-col {
+  flex: 1; background: var(--white);
+  border: 1.5pt solid var(--gray-mid);
+  border-radius: 5pt; overflow: hidden;
+}
+.cmp-col.win { border-color: var(--yellow); }
+.cmp-col-hd {
+  padding: 5pt 10pt;
+  background: var(--blue-mid);
+  color: var(--white);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10pt; font-weight: 700;
+  display: flex; align-items: center; gap: 7pt;
+}
+.cmp-col.win .cmp-col-hd { background: var(--blue-deep); }
+.win-badge {
+  background: var(--yellow); color: var(--blue-deep);
+  font-size: 6.5pt; font-weight: 800; letter-spacing: .1em;
+  text-transform: uppercase; padding: 1pt 5pt; border-radius: 2pt;
+}
+.cmp-col-bd { padding: 8pt 10pt; }
+.cmp-metric {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 5pt; padding-bottom: 5pt;
+  border-bottom: .5pt solid var(--gray-light);
+}
+.cmp-metric:last-child { border-bottom: none; margin: 0; padding: 0; }
+.cmp-metric .n { font-size: 7.5pt; font-weight: 600; color: #6b7a99; }
+.cmp-metric .v {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 16pt; font-weight: 700; color: var(--blue-deep);
+}
+.cmp-metric .v.g { color: #16a34a; }
+.cmp-metric .v.b { color: #dc2626; }
+
+/* ── step flow ── */
+.steps { display: flex; flex-direction: column; gap: 6pt; }
+.step-row { display: flex; align-items: flex-start; gap: 8pt; }
+.step-num {
+  width: 20pt; height: 20pt; flex-shrink: 0;
+  background: var(--blue-bright); color: var(--white);
+  border-radius: 50%;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 10pt; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.step-txt { font-size: 8pt; }
+.step-txt strong { color: var(--blue-deep); font-size: 8.5pt; }
+.step-txt small { color: #6b7a99; font-size: 7.5pt; }
+
+/* ── conclusion card ── */
+.ccard {
+  background: var(--white);
+  border: 1pt solid var(--gray-mid);
+  border-radius: 5pt;
+  padding: 8pt 10pt;
+  border-top: 3pt solid var(--blue-bright);
+}
+.ccard.y { border-top-color: var(--yellow); }
+.ccard.g { border-top-color: #16a34a; }
+.ccard h4 { font-size: 8.5pt; margin-bottom: 5pt; }
+.ccard ul { padding-left: 10pt; }
+.ccard li { font-size: 7pt; margin-bottom: 3pt; }
+
+/* ── divider stripe ── */
+.stripe {
+  height: 3pt;
+  background: linear-gradient(90deg, var(--blue-deep) 0%, var(--blue-bright) 50%, var(--yellow) 100%);
+}
+
+/* ── ref list ── */
+ol.refs { padding-left: 14pt; }
+ol.refs li {
+  font-size: 7pt; margin-bottom: 5pt; color: var(--text-body);
+}
+ol.refs a { color: var(--blue-bright); word-break: break-all; }
+
+/* ═══════════════════════════════════════════════════════════════
+   HERO PAGE — override body font for hero content
+════════════════════════════════════════════════════════════════ */
+.hero-body {
+  background: var(--blue-deep);
+  min-height: 177mm;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 18pt 28pt 18pt;
+}
+.hero-body::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 80% 50%, rgba(30,95,196,.4) 0%, transparent 70%),
+    repeating-linear-gradient(-45deg,
+      transparent, transparent 20px,
+      rgba(255,255,255,.012) 20px, rgba(255,255,255,.012) 21px);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--yellow); color: var(--blue-deep);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 7.5pt; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase;
+  padding: 3pt 10pt; border-radius: 2pt;
+  margin-bottom: 12pt; width: fit-content;
+  position: relative;
+}
+.hero-body h1 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 34pt; font-weight: 800;
+  color: var(--white); line-height: 1.05;
+  margin-bottom: 10pt; position: relative;
+}
+.hero-body h1 em { color: var(--yellow); font-style: normal; }
+.hero-sub {
+  color: var(--gray-mid); font-size: 9pt;
+  max-width: 380pt; position: relative;
+  margin-bottom: 14pt; line-height: 1.55;
+}
+.hero-meta { display: flex; gap: 20pt; flex-wrap: wrap; position: relative; margin-bottom: 4pt; }
+.hero-meta-item { color: var(--gray-mid); font-size: 8pt; }
+.hero-meta-item strong {
+  color: var(--yellow); display: block;
+  font-size: 6.5pt; letter-spacing: .1em;
+  text-transform: uppercase; margin-bottom: 1pt;
+}
+
+/* grid accent lines on hero */
+.hero-grid {
+  position: absolute; right: 0; top: 0; bottom: 0;
+  width: 160pt;
+  background: repeating-linear-gradient(90deg, transparent, transparent 19pt, rgba(30,95,196,.18) 19pt, rgba(30,95,196,.18) 20pt);
+  pointer-events: none;
+}
+.hero-grid::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 19pt, rgba(30,95,196,.18) 19pt, rgba(30,95,196,.18) 20pt);
+}
+
+/* ── big number accent on hero ── */
+.hero-big {
+  position: absolute; right: 20pt; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 90pt; font-weight: 900;
+  color: rgba(255,255,255,.04);
+  letter-spacing: -4pt;
+  line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PÁGINA 1 — PORTADA
+════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="hero-body">
+    <div class="hero-grid"></div>
+    <div class="hero-big">WQI</div>
+    <div class="hero-badge">Computación de Alto Desempeño · PySpark + Keras</div>
+    <h1>Calidad del Agua en<br><em>Ríos de la India</em></h1>
+    <p class="hero-sub">
+      Diagnóstico del Índice de Calidad del Agua (WQI) mediante Regresión Lineal distribuida (MLlib) y Red Neuronal profunda (TensorFlow/Keras) sobre datos reales de 18 estados.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong>Autor</strong>Juan Sebastián Bravo Santacruz</div>
+      <div class="hero-meta-item"><strong>Institución</strong>Pontificia Universidad Javeriana</div>
+      <div class="hero-meta-item"><strong>Fecha</strong>Mayo 2026</div>
+      <div class="hero-meta-item"><strong>Entorno</strong>Apache Spark 3.5.5 · TensorFlow/Keras</div>
+    </div>
+    <div class="stat-strip" style="position:relative;">
+      <div class="stat-item"><div class="v">534</div><div class="l">Registros brutos</div></div>
+      <div class="stat-item"><div class="v">447</div><div class="l">Registros limpios</div></div>
+      <div class="stat-item"><div class="v">18</div><div class="l">Estados</div></div>
+      <div class="stat-item"><div class="v">2</div><div class="l">Modelos ML</div></div>
+      <div class="stat-item"><div class="v">R²=1.0</div><div class="l">MLlib R²</div></div>
+    </div>
+  </div>
+  <!-- footer solo para portada -->
+  <div style="position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.35);border-top:1pt solid rgba(245,200,0,.3);padding:3pt 14pt;display:flex;justify-content:space-between;align-items:center;">
+    <span style="font-family:'Barlow Condensed',sans-serif;font-size:7pt;color:var(--gray-mid);letter-spacing:.1em;text-transform:uppercase;">PySpark 3.5.5 · TensorFlow/Keras · Apache Hadoop HDFS</span>
+    <span style="font-family:'Barlow Condensed',sans-serif;font-size:7pt;color:var(--yellow);font-weight:700;">1 / 9</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PÁGINA 2 — PROBLEMA, OBJETIVO Y DATOS
+════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div class="ph-title">Calidad del Agua — <span>India</span></div>
+    <div class="ph-section">01–02 · Problema &amp; Datos</div>
+    <div class="ph-page">2 / 9</div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="body">
+    <div class="g2" style="gap:12pt;align-items:start;">
+
+      <!-- Col izquierda: Problema -->
+      <div>
+        <div class="slabel">01 · Problema &amp; Objetivo</div>
+        <h2>¿Por qué predecir la<br><span>calidad del agua?</span></h2>
+        <p>India enfrenta uno de los mayores retos de contaminación fluvial del mundo: crecimiento industrial acelerado, alta densidad poblacional y vertimientos sin tratamiento previo degradan sus ríos. Este proyecto aplica <strong>HPC</strong> sobre mediciones fisicoquímicas de 18 estados para construir y predecir el <strong>WQI</strong> con dos enfoques de Machine Learning.</p>
+        <div class="alert y" style="margin-bottom:8pt;">
+          <strong>Metodología WQI:</strong> Pesos ponderados según <em>IntechOpen, Capítulo 69568</em>.
+        </div>
+        <div class="steps">
+          <div class="step-row"><div class="step-num">1</div><div class="step-txt"><strong>Importación desde HDFS</strong><br><small>Lectura del CSV en clúster Spark</small></div></div>
+          <div class="step-row"><div class="step-num">2</div><div class="step-txt"><strong>Preprocesamiento &amp; EDA</strong><br><small>Tipos, nulos, estadísticas, visualizaciones</small></div></div>
+          <div class="step-row"><div class="step-num">3</div><div class="step-txt"><strong>Construcción del WQI</strong><br><small>Cálculo mediante pesos bibliográficos</small></div></div>
+          <div class="step-row"><div class="step-num">4</div><div class="step-txt"><strong>Entrenamiento de modelos</strong><br><small>Regresión Lineal (MLlib) + Red Neuronal (Keras)</small></div></div>
+          <div class="step-row"><div class="step-num">5</div><div class="step-txt"><strong>Evaluación &amp; Conclusiones</strong><br><small>RMSE, MAE, R² — comparativa final</small></div></div>
+        </div>
+      </div>
+
+      <!-- Col derecha: Datos -->
+      <div>
+        <div class="slabel">02 · Carga de Datos</div>
+        <h2>Dataset: <span>Ríos de India</span></h2>
+        <div class="g4" style="margin-bottom:8pt;">
+          <div class="mcard"><div class="val">534</div><div class="lbl">Registros orig.</div></div>
+          <div class="mcard"><div class="val">11</div><div class="lbl">Columnas</div></div>
+          <div class="mcard hl"><div class="val">447</div><div class="lbl">Tras limpieza</div></div>
+          <div class="mcard"><div class="val">18</div><div class="lbl">Estados</div></div>
+        </div>
+
+        <div class="tw" style="margin-bottom:7pt;">
+          <table>
+            <thead><tr><th>Columna</th><th>Descripción</th><th>Unidad</th></tr></thead>
+            <tbody>
+              <tr><td><code>TEMP</code></td><td>Temperatura del agua</td><td>°C</td></tr>
+              <tr><td><code>DO</code></td><td>Oxígeno Disuelto (mayor = mejor)</td><td>mg/L</td></tr>
+              <tr><td><code>pH</code></td><td>Acidez/alcalinidad</td><td>adim.</td></tr>
+              <tr><td><code>CONDUCTIVITY</code></td><td>Conductividad eléctrica</td><td>μS/cm</td></tr>
+              <tr><td><code>BOD</code></td><td>Demanda Bioquímica de Oxígeno</td><td>mg/L</td></tr>
+              <tr><td><code>NITRATE_N_NITRITE_N</code></td><td>Nitratos/Nitritos</td><td>mg/L</td></tr>
+              <tr><td><code>FECAL_COLIFORM</code></td><td>Bacterias coliformes fecales</td><td>UFC/100mL</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tw">
+          <table>
+            <thead><tr><th>Columna</th><th>Nulos</th><th>Estado</th></tr></thead>
+            <tbody>
+              <tr><td>FECAL_COLIFORM</td><td>82</td><td><span class="tag-null">Mayor número</span></td></tr>
+              <tr><td>CONDUCTIVITY</td><td>30</td><td><span class="tag-null">Con nulos</span></td></tr>
+              <tr><td>BOD</td><td>6</td><td><span class="tag-null">Con nulos</span></td></tr>
+              <tr><td>TEMP</td><td>5</td><td><span class="tag-null">Con nulos</span></td></tr>
+              <tr><td>pH</td><td>0</td><td><span class="tag-ok">Limpio</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="alert" style="margin-top:5pt;font-size:7pt;">Se eliminaron filas con nulos → <strong>534 → 447 registros</strong> (≈16% pérdida).</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pf">
+    <span>Computación de Alto Desempeño · Pontificia Universidad Javeriana · Mayo 2026</span>
+    <span class="pf-num">2</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PÁGINA 3 — EDA (ESTADÍSTICAS + BOXPLOT + DO/pH)
+════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div class="ph-title">Calidad del Agua — <span>India</span></div>
+    <div class="ph-section">03 · EDA — Distribución &amp; Outliers</div>
+    <div class="ph-page">3 / 9</div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="body">
+    <div class="slabel">03 · Análisis Exploratorio de Datos (EDA)</div>
+    <h2 style="margin-bottom:6pt;">Distribución &amp; Comportamiento de los <span>Parámetros</span></h2>
+
+    <!-- Stats table -->
+    <div class="tw" style="margin-bottom:8pt;">
+      <table>
+        <thead>
+          <tr>
+            <th>Estadístico</th>
+            <th>TEMP (°C)</th>
+            <th>DO (mg/L)</th>
+            <th>pH</th>
+            <th>CONDUCTIVITY (μS/cm)</th>
+            <th>BOD (mg/L)</th>
+            <th>Nitratos (mg/L)</th>
+            <th>Col. Fecales (UFC)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><strong>Media</strong></td><td>25.24</td><td>6.39</td><td>7.80</td><td>684.98</td><td>5.34</td><td>1.38</td><td>7,384</td></tr>
+          <tr><td><strong>Desv. Est.</strong></td><td>3.45</td><td>1.62</td><td>0.65</td><td>1,769.33</td><td>8.50</td><td>2.80</td><td>30,714</td></tr>
+          <tr><td><strong>Mín</strong></td><td>10.5</td><td>0.0</td><td>6.3</td><td>39.0</td><td>0.2</td><td>0.0</td><td>0</td></tr>
+          <tr><td><strong>Máx</strong></td><td>33.8</td><td>16.3</td><td>14.7</td><td>24,062</td><td>75.6</td><td>45.5</td><td>310,417</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="g2" style="gap:10pt;">
+      <!-- Boxplot -->
+      <div class="chart-box">
+        <div class="chart-hd">
+          <h3>Distribución de Parámetros — Outliers</h3>
+          <span class="chart-tag">Boxplot · 5 variables</span>
+        </div>
+        <div class="chart-img" style="height:90pt;overflow:hidden;">
+          <img src="Images/Distribución de Parámetros.png" alt="Boxplot" style="max-height:88pt;object-fit:contain;">
+        </div>
+        <div class="chart-note"><strong>Conductividad y Coliformes Fecales</strong> concentran la mayor dispersión. Conductividad hasta 24,062 μS/cm; BOD con outliers &gt;75 mg/L (3× el límite). El OD y pH se mantienen relativamente estables.</div>
+      </div>
+      <!-- DO y pH -->
+      <div class="chart-box">
+        <div class="chart-hd">
+          <h3>Parámetros DO y pH</h3>
+          <span class="chart-tag">447 estaciones</span>
+        </div>
+        <div class="chart-img" style="height:90pt;overflow:hidden;">
+          <img src="Images/Parámetros DO y pH.png" alt="DO y pH" style="max-height:88pt;object-fit:contain;">
+        </div>
+        <div class="chart-note">DO oscila 4–9 mg/L con caídas a 0 (hipoxia crítica). pH ≈ 8 con picos &gt;13 (contaminación industrial). Mayoría de estaciones satisface estándar de pH, pero DO muestra violaciones frecuentes.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pf">
+    <span>Computación de Alto Desempeño · Pontificia Universidad Javeriana · Mayo 2026</span>
+    <span class="pf-num">3</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PÁGINA 4 — EDA (BOD, NITRATOS, CONDUCTIVIDAD, CF)
+════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div class="ph-title">Calidad del Agua — <span>India</span></div>
+    <div class="ph-section">03 · EDA — Contaminación Orgánica &amp; Microbiológica</div>
+    <div class="ph-page">4 / 9</div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="body">
+    <div class="slabel">03 · Análisis Exploratorio de Datos (continuación)</div>
+    <h2 style="margin-bottom:8pt;">Parámetros de <span>Contaminación</span></h2>
+
+    <div class="g2" style="gap:10pt;">
+      <!-- BOD y Nitratos -->
+      <div class="chart-box">
+        <div class="chart-hd">
+          <h3>BOD y Nitratos/Nitritos</h3>
+          <span class="chart-tag">Contaminación orgánica</span>
+        </div>
+        <div class="chart-img" style="height:95pt;overflow:hidden;">
+          <img src="Images/Parámetros BOD y Nitratos:Nitritos.png" alt="BOD y Nitratos" style="max-height:93pt;object-fit:contain;">
+        </div>
+        <div class="chart-note"><strong>BOD</strong> supera con frecuencia el límite de 3 mg/L, con picos de hasta 75 mg/L (alta carga orgánica). Los <strong>nitratos</strong> son generalmente bajos, pero sus picos coinciden con zonas agrícolas de alto riego.</div>
+      </div>
+      <!-- Conductividad y CF -->
+      <div class="chart-box">
+        <div class="chart-hd">
+          <h3>Conductividad y Coliformes Fecales</h3>
+          <span class="chart-tag">Parámetros de contaminación</span>
+        </div>
+        <div class="chart-img" style="height:95pt;overflow:hidden;">
+          <img src="Images/Conductividad y Coliformes Fecales.png" alt="Conductividad y CF" style="max-height:93pt;object-fit:contain;">
+        </div>
+        <div class="chart-note"><strong>Coliformes Fecales</strong> (escala log) van de 1 hasta &gt;100,000 UFC/100mL — máxima variabilidad del dataset. La <strong>Conductividad</strong> muestra picos aislados de alta concentración iónica: descargas industriales puntuales.</div>
+      </div>
+    </div>
+
+    <div class="alert" style="margin-top:9pt;">
+      <strong>Resumen EDA:</strong> Las variables con mayor impacto en calidad son Coliformes Fecales y Conductividad, ambas con distribuciones fuertemente sesgadas por outliers. El DO registra caídas críticas en puntos localizados. Estos hallazgos determinan los pesos del WQI en la sección siguiente.
+    </div>
+  </div>
+
+  <div class="pf">
+    <span>Computación de Alto Desempeño · Pontificia Universidad Javeriana · Mayo 2026</span>
+    <span class="pf-num">4</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PÁGINA 5 — CONSTRUCCIÓN DEL WQI
+════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div class="ph-title">Calidad del Agua — <span>India</span></div>
+    <div class="ph-section">04 · Índice de Calidad del Agua (WQI)</div>
+    <div class="ph-page">5 / 9</div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="body">
+    <div class="slabel">04 · Índice de Calidad del Agua (WQI)</div>
+    <h2 style="margin-bottom:7pt;">Construcción del <span>WQI</span> — Metodología Ponderada</h2>
+
+    <div class="g2" style="gap:12pt;align-items:start;">
+      <!-- Metodología + código -->
+      <div>
+        <p>El WQI se construyó como una <strong>suma ponderada</strong> de subíndices para cada parámetro, siguiendo la metodología de la referencia bibliográfica (IntechOpen, Cap. 69568). Cada parámetro se transforma en un <strong>puntaje de calidad</strong> (0 / 40 / 60 / 80 / 100) según rangos definidos, y luego se multiplica por su peso.</p>
+        <div class="cw" style="margin-top:7pt;">
+          <div class="ct"><span>Pesos WQI por Parámetro</span><span class="lt">Bibliografía</span></div>
+          <pre><span class="cm"># Pesos por parámetro (suman ≈ 100)</span>
+pesos = {
+    <span class="st">'DO'</span>           : <span class="nu">28.10</span>,  <span class="cm"># Oxígeno Disuelto</span>
+    <span class="st">'FECAL_COLIFORM'</span>: <span class="nu">28.10</span>,  <span class="cm"># Coliformes fecales</span>
+    <span class="st">'pH'</span>           : <span class="nu">16.50</span>,  <span class="cm"># Acidez/alcalinidad</span>
+    <span class="st">'CONDUCTIVITY'</span> :  <span class="nu">9.36</span>,  <span class="cm"># Conductividad</span>
+    <span class="st">'NITRATE'</span>      :  <span class="nu">2.80</span>,  <span class="cm"># Nitratos/nitritos</span>
+    <span class="st">'BOD'</span>          :  <span class="nu">0.72</span>,  <span class="cm"># Demanda O₂</span>
+}</pre>
+        </div>
+        <div class="alert y" style="margin-top:6pt;">
+          <strong>Referencia:</strong> Omer, N.H. (2019). <em>Water Quality Parameters</em>. IntechOpen. <a href="https://www.intechopen.com/chapters/69568" style="color:var(--blue-bright);font-size:7pt;">intechopen.com/chapters/69568</a>
+        </div>
+      </div>
+
+      <!-- Pesos visuales -->
+      <div>
+        <h3 style="margin-bottom:8pt;">Pesos del WQI por Parámetro</h3>
+        <div class="wb-row">
+          <div class="wb-lbl">DO (Oxígeno Disuelto)</div>
+          <div class="wb-track"><div class="wb-fill" style="width:100%"></div></div>
+          <div class="wb-val">28.1%</div>
+        </div>
+        <div class="wb-row">
+          <div class="wb-lbl">Coliformes Fecales</div>
+          <div class="wb-track"><div class="wb-fill" style="width:100%"></div></div>
+          <div class="wb-val">28.1%</div>
+        </div>
+        <div class="wb-row">
+          <div class="wb-lbl">pH</div>
+          <div class="wb-track"><div class="wb-fill" style="width:59%"></div></div>
+          <div class="wb-val">16.5%</div>
+        </div>
+        <div class="wb-row">
+          <div class="wb-lbl">Conductividad</div>
+          <div class="wb-track"><div class="wb-fill y" style="width:33%"></div></div>
+          <div class="wb-val">9.36%</div>
+        </div>
+        <div class="wb-row">
+          <div class="wb-lbl">Nitratos/Nitritos</div>
+          <div class="wb-track"><div class="wb-fill y" style="width:10%"></div></div>
+          <div class="wb-val">2.80%</div>
+        </div>
+        <div class="wb-row">
+          <div class="wb-lbl">BOD</div>
+          <div class="wb-track"><div class="wb-fill y" style="width:2.5%"></div></div>
+          <div class="wb-val">0.72%</div>
+        </div>
+
+        <div style="margin-top:12pt;">
+          <h3 style="margin-bottom:5pt;">Categorías de Calidad WQI</h3>
+          <div class="tw">
+            <table>
+              <thead><tr><th>Rango WQI</th><th>Categoría</th><th>Estaciones</th><th>%</th></tr></thead>
+              <tbody>
+                <tr><td>&lt; 25</td><td>Excelente</td><td>11</td><td>2.46%</td></tr>
+                <tr><td>25 – 50</td><td>Buena</td><td>95</td><td>21.25%</td></tr>
+                <tr><td>50 – 75</td><td><strong>Baja</strong></td><td><strong>271</strong></td><td><strong>60.63%</strong></td></tr>
+                <tr><td>75 – 100</td><td>Muy Baja</td><td>70</td><td>15.66%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pf">
+    <span>Computación de Alto Desempeño · Pontificia Universidad Javeriana · Mayo 2026</span>
+    <span class="pf-num">5</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PÁGINA 6 — WQI GEOGRÁFICO
+════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div class="ph-title">Calidad del Agua — <span>India</span></div>
+    <div class="ph-section">04 · WQI — Análisis Geográfico</div>
+    <div class="ph-page">6 / 9</div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="body">
+    <div class="slabel">04 · WQI — Distribución Geoespacial</div>
+    <h2 style="margin-bottom:7pt;">WQI por <span>Estado</span> y Mapa Nacional</h2>
+
+    <div class="g2" style="gap:10pt;margin-bottom:8pt;">
+      <!-- Distribución categorías -->
+      <div class="chart-box">
+        <div class="chart-hd">
+          <h3>Distribución de Categorías WQI</h3>
+          <span class="chart-tag">447 estaciones</span>
+        </div>
+        <div class="chart-img" style="height:92pt;overflow:hidden;">
+          <img src="Images/Distribución de Categorias de Calidad.png" alt="Categorías WQI" style="max-height:90pt;object-fit:contain;">
+        </div>
+        <div class="chart-note">La categoría <strong>Baja</strong> (WQI 50–75) domina con 271 estaciones (~60%). Solo 11 alcanzan categoría <strong>Excelente</strong>. La mayoría de ríos monitoreados presenta agua de calidad moderada a deficiente.</div>
+      </div>
+      <!-- WQI por estado -->
+      <div class="chart-box">
+        <div class="chart-hd">
+          <h3>WQI Medio por Estado</h3>
+          <span class="chart-tag">Ranking estatal</span>
+        </div>
+        <div class="chart-img" style="height:92pt;overflow:hidden;">
+          <img src="Images/WQI Medio por Estado de la India.png" alt="WQI por Estado" style="max-height:90pt;object-fit:contain;">
+        </div>
+        <div class="chart-note"><strong>Punjab</strong> tiene el WQI más bajo (37.2 — mejor calidad). <strong>Kerala</strong> presenta el WQI más alto (83.9) a pesar de su imagen ecológica. La mayoría de estados oscila entre 50–70. <em>Menor WQI = mejor calidad.</em></div>
+      </div>
+    </div>
+
+    <!-- Mapa -->
+    <div class="chart-box">
+      <div class="chart-hd">
+        <h3>Mapa del Índice de Calidad del Agua por Estado — India</h3>
+        <span class="chart-tag">Visualización geoespacial</span>
+      </div>
+      <div style="display:flex;gap:8pt;padding:5pt;background:#fafbfd;">
+        <div style="flex:1;overflow:hidden;border-radius:3pt;">
+          <img src="Images/Índice de Calidad del Agua (WQI) por Estado.png" alt="Mapa WQI India" style="width:100%;height:auto;max-height:56pt;object-fit:contain;border-radius:2pt;">
+        </div>
+        <div style="width:200pt;font-size:7pt;color:var(--text-body);line-height:1.6;padding-top:2pt;">
+          La mayoría del territorio (naranja: WQI 50–75) presenta calidad <strong>moderada a baja</strong>. La zona noroccidental (<strong>Himachal Pradesh</strong>) resalta en rojo oscuro (WQI 75–100) como zona de mayor deterioro. <strong>Punjab</strong> y estados del noreste son las únicas regiones que rondan el umbral de calidad "Buena".
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pf">
+    <span>Computación de Alto Desempeño · Pontificia Universidad Javeriana · Mayo 2026</span>
+    <span class="pf-num">6</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PÁGINA 7 — MODELOS ML
+════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div class="ph-title">Calidad del Agua — <span>India</span></div>
+    <div class="ph-section">05 · Entrenamiento de Modelos</div>
+    <div class="ph-page">7 / 9</div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="body">
+    <div class="slabel">05 · Entrenamiento de Modelos</div>
+    <h2 style="margin-bottom:7pt;">Regresión Lineal (MLlib) vs. <span>Red Neuronal</span> (Keras)</h2>
+
+    <div class="g2" style="gap:10pt;align-items:start;margin-bottom:10pt;">
+      <!-- MLlib -->
+      <div class="card">
+        <div class="card-hd">
+          <h3>Regresión Lineal — MLlib</h3>
+          <span class="badge">Distribuido</span>
+        </div>
+        <div class="card-bd">
+          <p style="font-size:7.5pt;margin-bottom:6pt;">Modelo lineal distribuido en el clúster Spark. Utiliza <code>VectorAssembler</code> + <code>StandardScaler</code> encadenados en un Pipeline con el modelo de regresión.</p>
+          <div class="cw">
+            <div class="ct"><span>Pipeline MLlib</span><span class="lt">PySpark ML</span></div>
+            <pre><span class="cm"># Ensamblado + escala + regresión</span>
+assembler = VectorAssembler(
+    inputCols=[<span class="st">'DO','pH','CONDUCTIVITY',</span>
+               <span class="st">'BOD','NITRATE_N_NITRITE_N',</span>
+               <span class="st">'FECAL_COLIFORM'</span>],
+    outputCol=<span class="st">'features_raw'</span>)
+scaler = StandardScaler(
+    inputCol=<span class="st">'features_raw'</span>,
+    outputCol=<span class="st">'features'</span>)
+lr = LinearRegression(
+    featuresCol=<span class="st">'features'</span>, labelCol=<span class="st">'WQI'</span>)
+pipeline = Pipeline(stages=[assembler, scaler, lr])
+model = pipeline.fit(train_df)</pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Keras -->
+      <div class="card">
+        <div class="card-hd">
+          <h3>Red Neuronal — Keras / TensorFlow</h3>
+          <span class="badge">Driver local</span>
+        </div>
+        <div class="card-bd">
+          <p style="font-size:7.5pt;margin-bottom:6pt;">Red densa de 3 capas con <code>Dropout</code> y <code>EarlyStopping</code>. Datos convertidos de Spark DataFrame a Pandas/NumPy para TensorFlow.</p>
+          <div class="cw">
+            <div class="ct"><span>Arquitectura Keras</span><span class="lt">TF / Keras</span></div>
+            <pre>model = Sequential([
+    Dense(<span class="nu">64</span>, activation=<span class="st">'relu'</span>,
+          input_shape=(X_train.shape[<span class="nu">1</span>],)),
+    Dropout(<span class="nu">0.2</span>),
+    Dense(<span class="nu">32</span>, activation=<span class="st">'relu'</span>),
+    Dropout(<span class="nu">0.1</span>),
+    Dense(<span class="nu">1</span>)  <span class="cm"># Salida: WQI predicho</span>
+])
+model.compile(optimizer=<span class="st">'adam'</span>, loss=<span class="st">'mse'</span>,
+              metrics=[<span class="st">'mae'</span>])
+es = EarlyStopping(monitor=<span class="st">'val_loss'</span>,
+                   patience=<span class="nu">10</span>,
+                   restore_best_weights=<span class="nb">True</span>)</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Convergencia Keras -->
+    <div class="chart-box">
+      <div class="chart-hd">
+        <h3>Convergencia del Modelo Keras — Curvas de Pérdida</h3>
+        <span class="chart-tag">~38 épocas · EarlyStopping</span>
+      </div>
+      <div class="chart-img" style="height:52pt;overflow:hidden;">
+        <img src="Images/Convergencia del Modelo Keras.png" alt="Convergencia Keras" style="max-height:50pt;object-fit:contain;">
+      </div>
+      <div class="chart-note">Convergencia rápida en las primeras 5 épocas. MSE y MAE de entrenamiento y validación se alinean sin sobreajuste. El <strong>EarlyStopping</strong> actuó correctamente al frenar antes del deterioro en validación.</div>
+    </div>
+  </div>
+
+  <div class="pf">
+    <span>Computación de Alto Desempeño · Pontificia Universidad Javeriana · Mayo 2026</span>
+    <span class="pf-num">7</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PÁGINA 8 — RESULTADOS
+════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div class="ph-title">Calidad del Agua — <span>India</span></div>
+    <div class="ph-section">06 · Resultados &amp; Evaluación</div>
+    <div class="ph-page">8 / 9</div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="body">
+    <div class="slabel">06 · Resultados &amp; Evaluación</div>
+    <h2 style="margin-bottom:7pt;">Desempeño <span>Comparativo</span> de los Modelos</h2>
+
+    <div class="g2" style="gap:10pt;align-items:start;">
+      <!-- Comparativa métricas -->
+      <div>
+        <div class="cmp" style="margin-bottom:8pt;">
+          <div class="cmp-col win">
+            <div class="cmp-col-hd">Regresión Lineal — MLlib <span class="win-badge">★ Mejor</span></div>
+            <div class="cmp-col-bd">
+              <div class="cmp-metric"><span class="n">RMSE</span><span class="v g">0.0726</span></div>
+              <div class="cmp-metric"><span class="n">MAE</span><span class="v g">0.0200</span></div>
+              <div class="cmp-metric"><span class="n">R²</span><span class="v g">1.0000</span></div>
+              <div class="cmp-metric"><span class="n">Entorno</span><span style="font-size:7pt;color:#6b7a99;">Spark Cluster</span></div>
+            </div>
+          </div>
+          <div class="cmp-col">
+            <div class="cmp-col-hd">Red Neuronal — Keras</div>
+            <div class="cmp-col-bd">
+              <div class="cmp-metric"><span class="n">RMSE</span><span class="v b">4.2619</span></div>
+              <div class="cmp-metric"><span class="n">MAE</span><span class="v b">3.0545</span></div>
+              <div class="cmp-metric"><span class="n">R²</span><span class="v g">0.9187</span></div>
+              <div class="cmp-metric"><span class="n">Entorno</span><span style="font-size:7pt;color:#6b7a99;">Driver local TF</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-box">
+          <div class="chart-hd">
+            <h3>Comparación de Métricas</h3>
+            <span class="chart-tag">Test set</span>
+          </div>
+          <div class="chart-img" style="height:70pt;overflow:hidden;">
+            <img src="Images/Comparacion de Modelos de Prediccion del WQI.png" alt="Comparación" style="max-height:68pt;object-fit:contain;">
+          </div>
+        </div>
+        <div class="alert" style="margin-top:5pt;font-size:7pt;">
+          La <strong>Regresión Lineal</strong> obtiene R²=1.0000 — esperable dado que el WQI es combinación lineal exacta de los features. La Red Neuronal (R²=0.9187) es robusta pero sin ventaja sobre la relación lineal pura.
+        </div>
+      </div>
+
+      <!-- Scatter plots -->
+      <div>
+        <div class="chart-box" style="margin-bottom:8pt;">
+          <div class="chart-hd">
+            <h3>MLlib — Predicción vs Real</h3>
+            <span class="chart-tag">Scatter plot</span>
+          </div>
+          <div class="chart-img" style="height:62pt;overflow:hidden;">
+            <img src="Images/Regresion Lineal MLlib — Prediccion vs Real.png" alt="MLlib scatter" style="max-height:60pt;object-fit:contain;">
+          </div>
+          <div class="chart-note">Puntos casi perfectamente alineados con la línea ideal. Dispersión mínima por precisión numérica del cómputo distribuido.</div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-hd">
+            <h3>Keras — Predicción vs Real</h3>
+            <span class="chart-tag">Train &amp; Test</span>
+          </div>
+          <div class="chart-img" style="height:62pt;overflow:hidden;">
+            <img src="Images/Red Neuronal Keras — Prediccion vs WQI Real.png" alt="Keras scatter" style="max-height:60pt;object-fit:contain;">
+          </div>
+          <div class="chart-note">Train R²=0.9484 / Test R²=0.9187. Buena generalización sin sobreajuste. Mayor dispersión en WQI bajo (20–40) por escasez de ejemplos.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pf">
+    <span>Computación de Alto Desempeño · Pontificia Universidad Javeriana · Mayo 2026</span>
+    <span class="pf-num">8</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     PÁGINA 9 — CONCLUSIONES & REFERENCIAS
+════════════════════════════════════════════════════════════════ -->
+<div class="page">
+  <div class="ph">
+    <div class="ph-title">Calidad del Agua — <span>India</span></div>
+    <div class="ph-section">07–08 · Conclusiones &amp; Referencias</div>
+    <div class="ph-page">9 / 9</div>
+  </div>
+  <div class="stripe"></div>
+
+  <div class="body">
+    <div class="slabel">07 · Conclusiones &amp; Recomendaciones</div>
+    <h2 style="margin-bottom:7pt;">Hallazgos <span>Clave</span> del Proyecto</h2>
+
+    <div class="g4" style="margin-bottom:9pt;">
+      <div class="ccard y">
+        <h4>🔎 Outliers</h4>
+        <ul>
+          <li>Conductividad sesgada hacia valores extremos.</li>
+          <li>BOD con picos de descargas orgánicas.</li>
+          <li>Coliformes: media 7,384 vs máx. 310,417 — distribución muy sesgada.</li>
+        </ul>
+      </div>
+      <div class="ccard g">
+        <h4>💧 WQI</h4>
+        <ul>
+          <li>Categoría Baja domina (~60% estaciones).</li>
+          <li>Punjab: mejor calidad (WQI 37.2).</li>
+          <li>Kerala: peor (WQI 83.9).</li>
+          <li>Diferencias regionales significativas.</li>
+        </ul>
+      </div>
+      <div class="ccard">
+        <h4>🤖 Modelos</h4>
+        <ul>
+          <li>Regresión Lineal supera a la Red Neuronal en todas las métricas.</li>
+          <li>Naturaleza lineal del WQI favorece modelos lineales.</li>
+          <li>MLlib: escalable en entorno distribuido.</li>
+        </ul>
+      </div>
+      <div class="ccard y">
+        <h4>📝 General</h4>
+        <ul>
+          <li>Calidad heterogénea, predominio de nivel Bajo.</li>
+          <li>PySpark + HDFS: pipeline reproducible y escalable.</li>
+          <li>Recomendado seguimiento focalizado en estaciones con outliers.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="stripe" style="margin-bottom:8pt;height:1.5pt;opacity:.4;"></div>
+
+    <div class="slabel">08 · Referencias</div>
+    <h2 style="font-size:12pt;margin-bottom:5pt;">Referencias <span>Bibliográficas</span></h2>
+    <ol class="refs">
+      <li>Apache Spark. <em>PySpark MLlib Linear Regression Documentation</em>. <a href="https://spark.apache.org/docs/latest/api/python/reference/api/pyspark.ml.regression.LinearRegression.html">spark.apache.org/docs/latest/…/LinearRegression.html</a></li>
+      <li>Keras. <em>The Sequential Model</em>. <a href="https://keras.io/guides/sequential_model/">keras.io/guides/sequential_model/</a></li>
+      <li>TensorFlow. <em>tf.keras.Sequential</em>. <a href="https://www.tensorflow.org/api_docs/python/tf/keras/Sequential">tensorflow.org/api_docs/python/tf/keras/Sequential</a></li>
+      <li>Scikit-learn. <em>Metrics and scoring: quantifying the quality of predictions</em>. <a href="https://scikit-learn.org/stable/modules/model_evaluation.html">scikit-learn.org/stable/modules/model_evaluation.html</a></li>
+      <li>Scikit-learn. <em>r2_score</em>. <a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.r2_score.html">scikit-learn.org/stable/…/r2_score.html</a></li>
+      <li>Omer, N. H. (2019). <em>Water Quality Parameters</em>. IntechOpen. <a href="https://www.intechopen.com/chapters/69568">intechopen.com/chapters/69568</a></li>
+    </ol>
+  </div>
+
+  <div class="pf">
+    <span>Computación de Alto Desempeño · Pontificia Universidad Javeriana · Mayo 2026</span>
+    <span class="pf-num">9</span>
+  </div>
+</div>
+
+</body>
+</html>
